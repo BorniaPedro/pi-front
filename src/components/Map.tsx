@@ -13,7 +13,10 @@ export default function OLMap() {
 
   useEffect(() => {
     if (mapRef.current) {
-      new Map({
+      const southwest = fromLonLat([-54.6, -26.7]);
+      const northeast = fromLonLat([-48.0, -22.5]); 
+
+      const map = new Map({
         target: mapRef.current,
         layers: [
           new TileLayer({
@@ -21,10 +24,15 @@ export default function OLMap() {
           }),
         ],
         view: new View({
-          center: fromLonLat([-46.625290, -23.533773]), // São Paulo como exemplo
-          zoom: 10,
+          center: fromLonLat([-51.5, -24.5]), 
+          zoom: 15,
+          minZoom: 4,
+          maxZoom: 20,
+          extent: [...southwest, ...northeast],
         }),
       });
+
+      return () => map.setTarget(undefined);
     }
   }, []);
 
