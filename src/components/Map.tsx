@@ -33,11 +33,11 @@ export default function OLMap() {
       format: new GeoJSON(),
     });
     const gezSource = new VectorSource({
-      url: '/mapas/gez.json',
+      url: '/mapas/GEZParana.geojson',
       format: new GeoJSON(),
     });
     const paranaSource = new VectorSource({
-      url: '/mapas/parana.json',
+      url: '/mapas/parana.geojson',
       format: new GeoJSON(),
     });
 
@@ -106,14 +106,14 @@ export default function OLMap() {
       let climaZona: string | null = null;
       climaSource.forEachFeature((feature) => {
         if (feature.getGeometry()?.intersectsCoordinate(coord)) {
-          climaZona = feature.get('zona_nome') || feature.get('ZONA') || feature.get('nome') || 'Desconhecida';
+          climaZona = feature.get('zona_nome') || 'Desconhecida';
         }
       });
 
       let gezTipo: string | null = null;
       gezSource.forEachFeature((feature) => {
         if (feature.getGeometry()?.intersectsCoordinate(coord)) {
-          gezTipo = feature.get('TIPO') || feature.get('nome') || 'Desconhecido';
+          gezTipo = feature.get('zona_nome') || 'Desconhecida';
         }
       });
 

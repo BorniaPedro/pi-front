@@ -204,7 +204,7 @@
             "properties": {
                 "fid": 6,
                 "DN": 1,
-                "zona_nome": "Warm temperate Moist"
+                "zona_nome": "Warm Temperate Moist"
             },
             "geometry": {
                 "type": "Polygon",
@@ -432,7 +432,7 @@
             "properties": {
                 "fid": 10,
                 "DN": 1,
-                "zona_nome": "Warm temperate Moist"
+                "zona_nome": "Warm Temperate Moist"
             },
             "geometry": {
                 "type": "Polygon",
@@ -808,7 +808,7 @@
             "properties": {
                 "fid": 18,
                 "DN": 1,
-                "zona_nome": "Warm temperate Moist"
+                "zona_nome": "Warm Temperate Moist"
             },
             "geometry": {
                 "type": "Polygon",
@@ -977,7 +977,7 @@
             "properties": {
                 "fid": 21,
                 "DN": 5,
-                "zona_nome": "Warm temperate Moist"
+                "zona_nome": "Warm Temperate Moist"
             },
             "geometry": {
                 "type": "Polygon",
@@ -1012,7 +1012,7 @@
             "properties": {
                 "fid": 22,
                 "DN": 1,
-                "zona_nome": "Warm temperate Moist"
+                "zona_nome": "Warm Temperate Moist"
             },
             "geometry": {
                 "type": "Polygon",
@@ -1082,7 +1082,7 @@
             "properties": {
                 "fid": 24,
                 "DN": 5,
-                "zona_nome": "Warm temperate Moist"
+                "zona_nome": "Warm Temperate Moist"
             },
             "geometry": {
                 "type": "Polygon",
@@ -1117,7 +1117,7 @@
             "properties": {
                 "fid": 25,
                 "DN": 1,
-                "zona_nome": "Warm temperate Moist"
+                "zona_nome": "Warm Temperate Moist"
             },
             "geometry": {
                 "type": "Polygon",
@@ -1681,7 +1681,7 @@
             "properties": {
                 "fid": 29,
                 "DN": 5,
-                "zona_nome": "Warm temperate Moist"
+                "zona_nome": "Warm Temperate Moist"
             },
             "geometry": {
                 "type": "Polygon",
@@ -1716,7 +1716,7 @@
             "properties": {
                 "fid": 30,
                 "DN": 1,
-                "zona_nome": "Warm temperate Moist"
+                "zona_nome": "Warm Temperate Moist"
             },
             "geometry": {
                 "type": "Polygon",
@@ -1786,7 +1786,7 @@
             "properties": {
                 "fid": 32,
                 "DN": 5,
-                "zona_nome": "Warm temperate Moist"
+                "zona_nome": "Warm Temperate Moist"
             },
             "geometry": {
                 "type": "Polygon",
@@ -1821,7 +1821,7 @@
             "properties": {
                 "fid": 33,
                 "DN": 5,
-                "zona_nome": "Warm temperate Moist"
+                "zona_nome": "Warm Temperate Moist"
             },
             "geometry": {
                 "type": "Polygon",
@@ -1923,7 +1923,7 @@
             "properties": {
                 "fid": 35,
                 "DN": 1,
-                "zona_nome": "Warm temperate Moist"
+                "zona_nome": "Warm Temperate Moist"
             },
             "geometry": {
                 "type": "Polygon",
@@ -2071,7 +2071,7 @@
             "properties": {
                 "fid": 39,
                 "DN": 1,
-                "zona_nome": "Warm temperate Moist"
+                "zona_nome": "Warm Temperate Moist"
             },
             "geometry": {
                 "type": "Polygon",
@@ -2106,7 +2106,7 @@
             "properties": {
                 "fid": 40,
                 "DN": 1,
-                "zona_nome": "Warm temperate Moist"
+                "zona_nome": "Warm Temperate Moist"
             },
             "geometry": {
                 "type": "Polygon",
@@ -2235,7 +2235,7 @@
             "properties": {
                 "fid": 43,
                 "DN": 1,
-                "zona_nome": "Warm temperate Moist"
+                "zona_nome": "Warm Temperate Moist"
             },
             "geometry": {
                 "type": "Polygon",
@@ -2340,7 +2340,7 @@
             "properties": {
                 "fid": 46,
                 "DN": 1,
-                "zona_nome": "Warm temperate Moist"
+                "zona_nome": "Warm Temperate Moist"
             },
             "geometry": {
                 "type": "Polygon",
@@ -2846,7 +2846,7 @@
             "properties": {
                 "fid": 50,
                 "DN": 1,
-                "zona_nome": "Warm temperate Moist"
+                "zona_nome": "Warm Temperate Moist"
             },
             "geometry": {
                 "type": "Polygon",
@@ -2951,7 +2951,7 @@
             "properties": {
                 "fid": 53,
                 "DN": 1,
-                "zona_nome": "Warm temperate Moist"
+                "zona_nome": "Warm Temperate Moist"
             },
             "geometry": {
                 "type": "Polygon",
@@ -3029,7 +3029,7 @@
             "properties": {
                 "fid": 55,
                 "DN": 1,
-                "zona_nome": "Warm temperate Moist"
+                "zona_nome": "Warm Temperate Moist"
             },
             "geometry": {
                 "type": "Polygon",
@@ -3064,7 +3064,7 @@
             "properties": {
                 "fid": 56,
                 "DN": 1,
-                "zona_nome": "Warm temperate Moist"
+                "zona_nome": "Warm Temperate Moist"
             },
             "geometry": {
                 "type": "Polygon",
@@ -3099,7 +3099,7 @@
             "properties": {
                 "fid": 57,
                 "DN": 1,
-                "zona_nome": "Warm temperate Moist"
+                "zona_nome": "Warm Temperate Moist"
             },
             "geometry": {
                 "type": "Polygon",
@@ -3134,7 +3134,7 @@
             "properties": {
                 "fid": 58,
                 "DN": 1,
-                "zona_nome": "Warm temperate Moist"
+                "zona_nome": "Warm Temperate Moist"
             },
             "geometry": {
                 "type": "Polygon",
@@ -3228,7 +3228,7 @@
             "properties": {
                 "fid": 60,
                 "DN": 1,
-                "zona_nome": "Warm temperate Moist"
+                "zona_nome": "Warm Temperate Moist"
             },
             "geometry": {
                 "type": "Polygon",
@@ -3271,7 +3271,7 @@
             "properties": {
                 "fid": 61,
                 "DN": 5,
-                "zona_nome": "Warm temperate Moist"
+                "zona_nome": "Warm Temperate Moist"
             },
             "geometry": {
                 "type": "Polygon",
@@ -3306,7 +3306,7 @@
             "properties": {
                 "fid": 62,
                 "DN": 1,
-                "zona_nome": "Warm temperate Moist"
+                "zona_nome": "Warm Temperate Moist"
             },
             "geometry": {
                 "type": "Polygon",
@@ -3357,7 +3357,7 @@
             "properties": {
                 "fid": 63,
                 "DN": 5,
-                "zona_nome": "Warm temperate Moist"
+                "zona_nome": "Warm Temperate Moist"
             },
             "geometry": {
                 "type": "Polygon",
@@ -3790,7 +3790,7 @@
             "properties": {
                 "fid": 74,
                 "DN": 1,
-                "zona_nome": "Warm temperate Moist"
+                "zona_nome": "Warm Temperate Moist"
             },
             "geometry": {
                 "type": "Polygon",
@@ -3825,7 +3825,7 @@
             "properties": {
                 "fid": 75,
                 "DN": 5,
-                "zona_nome": "Warm temperate Moist"
+                "zona_nome": "Warm Temperate Moist"
             },
             "geometry": {
                 "type": "Polygon",
@@ -3860,7 +3860,7 @@
             "properties": {
                 "fid": 76,
                 "DN": 1,
-                "zona_nome": "Warm temperate Moist"
+                "zona_nome": "Warm Temperate Moist"
             },
             "geometry": {
                 "type": "Polygon",
@@ -3903,7 +3903,7 @@
             "properties": {
                 "fid": 77,
                 "DN": 5,
-                "zona_nome": "Warm temperate Moist"
+                "zona_nome": "Warm Temperate Moist"
             },
             "geometry": {
                 "type": "Polygon",
@@ -4321,7 +4321,7 @@
             "properties": {
                 "fid": 83,
                 "DN": 5,
-                "zona_nome": "Warm temperate Moist"
+                "zona_nome": "Warm Temperate Moist"
             },
             "geometry": {
                 "type": "Polygon",
@@ -4493,7 +4493,7 @@
             "properties": {
                 "fid": 87,
                 "DN": 5,
-                "zona_nome": "Warm temperate Moist"
+                "zona_nome": "Warm Temperate Moist"
             },
             "geometry": {
                 "type": "Polygon",
@@ -5922,7 +5922,7 @@
             "properties": {
                 "fid": 90,
                 "DN": 5,
-                "zona_nome": "Warm temperate Moist"
+                "zona_nome": "Warm Temperate Moist"
             },
             "geometry": {
                 "type": "Polygon",
@@ -6072,7 +6072,7 @@
             "properties": {
                 "fid": 92,
                 "DN": 5,
-                "zona_nome": "Warm temperate Moist"
+                "zona_nome": "Warm Temperate Moist"
             },
             "geometry": {
                 "type": "Polygon",
@@ -6142,7 +6142,7 @@
             "properties": {
                 "fid": 94,
                 "DN": 5,
-                "zona_nome": "Warm temperate Moist"
+                "zona_nome": "Warm Temperate Moist"
             },
             "geometry": {
                 "type": "Polygon",
@@ -7786,7 +7786,7 @@
             "properties": {
                 "fid": 100,
                 "DN": 5,
-                "zona_nome": "Warm temperate Moist"
+                "zona_nome": "Warm Temperate Moist"
             },
             "geometry": {
                 "type": "Polygon",
