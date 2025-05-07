@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import { userSchema } from '@/lib/schemas'
+import { userSchema } from '@/lib/schemas/userSchema'
 
 async function fetchUsers() {
   const response = await fetch('https://jsonplaceholder.typicode.com/users')

@@ -2,7 +2,7 @@
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { userSchema } from "@/lib/schemas";
+import { userSchema } from "@/lib/schemas/userSchema";
 import { useCreateUser } from "@/hooks/useCreateUser";
 import { useRouter } from "next/navigation";
 import { z } from "zod";

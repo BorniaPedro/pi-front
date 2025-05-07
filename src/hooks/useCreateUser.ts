@@ -1,6 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 import { z } from "zod";
-import { userSchema } from "@/lib/schemas";
+import { userSchema } from "@/lib/schemas/userSchema";
 
 type UserFormData = z.infer<typeof userSchema>;
 
