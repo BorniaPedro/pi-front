@@ -11,6 +11,8 @@ import VectorSource from 'ol/source/Vector';
 import VectorLayer from 'ol/layer/Vector';
 import GeoJSON from 'ol/format/GeoJSON';
 import { Style, Fill, Stroke } from 'ol/style';
+import { Feature, Overlay } from 'ol';
+import { Geometry } from 'ol/geom';
 
 interface OLMapProps {
   onSelectInfo?: (info: {
@@ -23,12 +25,19 @@ interface OLMapProps {
 
 export default function OLMap({ onSelectInfo }: OLMapProps) {
   const mapRef = useRef<HTMLDivElement | null>(null);
+  const mapInstance = useRef<Map | null>(null);
+  const markerRed = useRef<Overlay | null>(null);
+
+  const onSelectInfoRef = useRef(onSelectInfo);
+  useEffect(() => {
+    onSelectInfoRef.current = onSelectInfo;
+  }, [onSelectInfo]);
 
   useEffect(() => {
-    if (!mapRef.current) return;
+    if (!mapRef.current || mapInstance.current) return;
 
-    const southwest = fromLonLat([-55.0, -26.8]);
-    const northeast = fromLonLat([-47.8, -22.3]);
+    const southwest = fromLonLat([-60.0, -30.0]);
+    const northeast = fromLonLat([-42.0, -18.0]);
 
     // Mapas GeoJSON
     const climaSource = new VectorSource({
@@ -46,7 +55,7 @@ export default function OLMap({ onSelectInfo }: OLMapProps) {
 
     const estiloSemBorda = new Style({
       fill: new Fill({
-        color: 'rgba(0, 128, 255, 0.0)', // azul claro com transparência
+        color: 'rgba(0, 128, 255, 0.0)',
       }),
     });
 
@@ -64,38 +73,52 @@ export default function OLMap({ onSelectInfo }: OLMapProps) {
       source: paranaSource,
       style: new Style({
         stroke: new Stroke({
-          color: 'rgba(0, 0, 0, 1)', // preto
+          color: 'rgba(0, 0, 0, 1)',
           width: 2,
         }),
       }),
     });
 
+    const markerElement = document.createElement('div');
+    markerElement.className = 'marker';
+    markerElement.style.width = '20px';
+    markerElement.style.height = '20px';
+    markerElement.style.backgroundColor = 'red';
+    markerElement.style.borderRadius = '50%';
+    markerElement.style.border = '2px solid white';
+    markerElement.style.pointerEvents = 'none';
+
+    const markerOverlay = new Overlay({
+      element: markerElement,
+      positioning: 'center-center',
+      stopEvent: false,
+    });
+    markerRed.current = markerOverlay;
+
     const map = new Map({
       target: mapRef.current,
       layers: [
-        new TileLayer({
-          source: new OSM(),
-        }),
+        new TileLayer({ source: new OSM() }),
         climaLayer,
         gezLayer,
         paranaLayer,
       ],
       view: new View({
         center: fromLonLat([-51.4, -24.5]),
-        zoom: 6,
-        minZoom: 4,
+        zoom: 6.8,
+        minZoom: 6,
         maxZoom: 20,
         extent: [...southwest, ...northeast],
       }),
+      overlays: [markerOverlay],
     });
 
-    // Clique no mapa
     map.on('click', (evt) => {
       const coord = evt.coordinate;
       const [lon, lat] = toLonLat(coord);
 
       let isInsideParana = false;
-      paranaSource.forEachFeature((feature) => {
+      paranaSource.forEachFeature((feature: Feature<Geometry>) => {
         if (feature.getGeometry()?.intersectsCoordinate(coord)) {
           isInsideParana = true;
         }
@@ -106,22 +129,23 @@ export default function OLMap({ onSelectInfo }: OLMapProps) {
         return;
       }
 
+      markerOverlay.setPosition(coord); // Aqui o marcador aparece
 
       let climaZona: string | null = null;
-      climaSource.forEachFeature((feature) => {
+      climaSource.forEachFeature((feature: Feature<Geometry>) => {
         if (feature.getGeometry()?.intersectsCoordinate(coord)) {
           climaZona = feature.get('zona_nome') || 'Desconhecida';
         }
       });
 
       let gezTipo: string | null = null;
-      gezSource.forEachFeature((feature) => {
+      gezSource.forEachFeature((feature: Feature<Geometry>) => {
         if (feature.getGeometry()?.intersectsCoordinate(coord)) {
           gezTipo = feature.get('zona_nome') || 'Desconhecida';
         }
       });
 
-      onSelectInfo?.({
+      onSelectInfoRef.current?.({
         lat: Number(lat.toFixed(6)),
         lon: Number(lon.toFixed(6)),
         clima: climaZona,
@@ -130,8 +154,7 @@ export default function OLMap({ onSelectInfo }: OLMapProps) {
     });
 
     return () => map.setTarget(undefined);
-  }, [onSelectInfo]);
+  }, []);
 
-  return <div ref={mapRef} style={{ width: '100%', height: '100vh' }} />;
+  return <div ref={mapRef} style={{ width: '100%', height: '80vh' }} />;
 }
-
