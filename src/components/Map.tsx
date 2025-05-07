@@ -10,16 +10,20 @@ import { fromLonLat, toLonLat } from 'ol/proj';
 import VectorSource from 'ol/source/Vector';
 import VectorLayer from 'ol/layer/Vector';
 import GeoJSON from 'ol/format/GeoJSON';
-import { Style, Stroke } from 'ol/style';
+import { Style, Fill, Stroke } from 'ol/style';
+import { on } from 'events';
 
-export default function OLMap() {
-  const mapRef = useRef<HTMLDivElement | null>(null);
-  const [info, setInfo] = useState<{
+interface OLMapProps {
+  onSelectInfo?: (info: {
     lat: number;
     lon: number;
     clima: string | null;
     gez: string | null;
-  } | null>(null);
+  }) => void;
+}
+
+export default function OLMap({ onSelectInfo }: OLMapProps) {
+  const mapRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     if (!mapRef.current) return;
@@ -41,40 +45,41 @@ export default function OLMap() {
       format: new GeoJSON(),
     });
 
+    const estiloSemBorda = new Style({
+      fill: new Fill({
+        color: 'rgba(0, 128, 255, 0.0)', // azul claro com transparência
+      }),
+    });
+
+    const climaLayer = new VectorLayer({
+      source: climaSource,
+      style: estiloSemBorda,
+    });
+
+    const gezLayer = new VectorLayer({
+      source: gezSource,
+      style: estiloSemBorda,
+    });
+
+    const paranaLayer = new VectorLayer({
+      source: paranaSource,
+      style: new Style({
+        stroke: new Stroke({
+          color: 'rgba(0, 0, 0, 1)', // preto
+          width: 2,
+        }),
+      }),
+    });
+
     const map = new Map({
       target: mapRef.current,
       layers: [
-        new TileLayer({ source: new OSM() }),
-
-        new VectorLayer({
-          source: climaSource,
-          style: new Style({
-            stroke: new Stroke({
-              color: '#ff6600',
-              width: 2,
-            }),
-          }),
+        new TileLayer({
+          source: new OSM(),
         }),
-
-        new VectorLayer({
-          source: gezSource,
-          style: new Style({
-            stroke: new Stroke({
-              color: '#008000',
-              width: 2,
-            }),
-          }),
-        }),
-
-        new VectorLayer({
-          source: paranaSource,
-          style: new Style({
-            stroke: new Stroke({
-              color: '#0000ff',
-              width: 2,
-            }),
-          }),
-        }),
+        climaLayer,
+        gezLayer,
+        paranaLayer,
       ],
       view: new View({
         center: fromLonLat([-51.4, -24.5]),
@@ -117,7 +122,7 @@ export default function OLMap() {
         }
       });
 
-      setInfo({
+      onSelectInfo?.({
         lat: Number(lat.toFixed(6)),
         lon: Number(lon.toFixed(6)),
         clima: climaZona,
@@ -126,19 +131,8 @@ export default function OLMap() {
     });
 
     return () => map.setTarget(undefined);
-  }, []);
+  }, [onSelectInfo]);
 
-  return (
-    <>
-      <div ref={mapRef} style={{ width: '100%', height: '80vh' }} />
-      {info && (
-        <div className="p-4 bg-black-100 text-sm">
-          <strong>Latitude:</strong> {info.lat} <br />
-          <strong>Longitude:</strong> {info.lon} <br />
-          <strong>Zona Climática:</strong> {info.clima} <br />
-          <strong>Zona ecológica global:</strong> {info.gez}
-        </div>
-      )}
-    </>
-  );
+  return <div ref={mapRef} style={{ width: '100%', height: '100vh' }} />;
 }
+
