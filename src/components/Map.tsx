@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, } from 'react';
 import 'ol/ol.css';
 import Map from 'ol/Map';
 import View from 'ol/View';
@@ -11,7 +11,6 @@ import VectorSource from 'ol/source/Vector';
 import VectorLayer from 'ol/layer/Vector';
 import GeoJSON from 'ol/format/GeoJSON';
 import { Style, Fill, Stroke } from 'ol/style';
-import { on } from 'events';
 
 interface OLMapProps {
   onSelectInfo?: (info: {
