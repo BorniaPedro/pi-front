@@ -36,16 +36,20 @@ export function CadastroProjetoForm({ usuarioLogado, codigo }: { usuarioLogado: 
 
     const cadastrarProjetoMutation = useMutation({
         mutationFn: async (data: ProjetoForm) => {
-            const response = await fetch('/api/projetos', {
+            const response = await fetch('http://localhost:8888/project', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    ...data,
-                    codigo: `PROJ-${Math.floor(Math.random() * 10000)}`,
+                    name: data.Nome,
+                    location: "Brazil",
+                    state: "Parana",
+                    climateZone: data.climateZone,
+                    ecologicalZone: data.ecologicalZone,
+                    startPeriod: `${data.startYear}-01-01`,
+                    endPeriod: `${data.endYear}-01-01`
                 }),
             });
-
-            if (!response.ok) throw new Error('Falha ao cadastrar projeto');
+            if (!response.ok) throw new Error
             return response.json();
         },
         onSuccess: () => {
