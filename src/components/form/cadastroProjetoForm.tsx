@@ -97,26 +97,6 @@ export function CadastroProjetoForm({ usuarioLogado, codigo }: { usuarioLogado: 
                         {errors.Nome && <p className="mt-1 text-sm text-red-600">{errors.Nome.message}</p>}
                     </div>
 
-                    {/* Dono */}
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700">Dono do Projeto</label>
-                        <input
-                            {...register('Dono')}
-                            readOnly
-                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm bg-gray-100 p-2 border"
-                        />
-                    </div>
-
-                    {/* Código */}
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700">Código do Projeto</label>
-                        <input
-                            {...register('Codigo')}
-                            readOnly
-                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm bg-gray-100 p-2 border"
-                        />
-                    </div>
-
                     {/* Localização - Mapa */}
                     <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">Localização - Clique no mapa para selecionar</label>

@@ -6,8 +6,8 @@ import './globals.css'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Meu Projeto',
-  description: 'Projeto com Next.js 14, Zod e TanStack Query',
+  title: 'MaParaná',
+  description: 'Projeto para Calculo de Créditos de Carbono no Paraná',
 }
 
 export default function RootLayout({
