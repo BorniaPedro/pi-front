@@ -10,9 +10,11 @@ export default function ProjectCard({ project }: ProjectCardProps){
     const endYear = new Date(project.endPeriod).getFullYear()
 
     const router = useRouter()
+
+    const id = project.id;
     
     const handleClick = () => {
-        router.push(`/projetos/{project.id}`)
+        router.push(`/projetos/${id}/stratums`)
     }
 
 
