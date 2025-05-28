@@ -57,6 +57,7 @@ export function CadastroProjetoForm({ usuarioLogado, codigo }: { usuarioLogado: 
             setMapaSelecionado(false);
             setDadosLocalizacao(null);
             alert('Projeto cadastrado com sucesso!');
+            router.push('/menu')
         },
         onError: (error: Error) => alert(error.message || 'Erro ao cadastrar projeto'),
     });
