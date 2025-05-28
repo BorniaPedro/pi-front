@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
+
 // hooks/useGetStratums.ts
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { StratumForm, Stratum } from '@/lib/stratumSchema';
@@ -9,17 +9,18 @@ export function useGetStratums(projetoId: string | number) {
     return useQuery<Stratum[], Error>({
         queryKey: [STRATUMS_QUERY_KEY, ...(projetoId ? [projetoId] : [])],
         queryFn: async (): Promise<Stratum[]> => {
-            const url = projetoId ? `/api/stratums/${projetoId}` : '/api/stratums'; // Local da API
-            const response = await fetch(url);
+            //const url = projetoId ? `/api/stratums/${projetoId}` : '/api/stratums'; // Local da API
+            let path = '/stratum';
+            if (projetoId) {
+                path += `?projetoId=${projetoId}`;
+            }
+            const response = await fetch(`http://localhost:8888${path}`, {
+                method: 'GET',
+                headers: { 'Content-Type': 'application/json' },
+            });
             if (!response.ok) {
-                let errorMessage = 'Erro ao buscar stratums';
-                try {
-                    const errorData = await response.json();
-                    errorMessage = errorData.message || errorMessage;
-                } catch (e) {
-                    // Mantem a mensagem de erro genérica se não for possível extrair do JSON
-                }
-                throw new Error(errorMessage);
+                const errorData = await response.json().catch(() => ({}));
+                throw new Error(errorData.message || `Erro ao buscar stratums (status: ${response.status})`);
             }
             return response.json();
         }
@@ -30,21 +31,16 @@ export function useGetStratums(projetoId: string | number) {
 export function useCreateStratum() {
     const queryClient = useQueryClient();
 
-    return useMutation<Stratum, Error, StratumForm & { projetoId: string | number }>({
-        mutationFn: async (newStratum: StratumForm & { projetoId: string | number }): Promise<Stratum> => {
-            const response = await fetch('/api/stratums', { // Local da API
+    return useMutation<Stratum, Error, StratumForm>({
+        mutationFn: async (newStratum) => {
+            const response = await fetch('http://localhost:8888/stratum', { // Local da API
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(newStratum),
             });
             if (!response.ok) {
-                let errorMessage = 'Erro ao criar Stratum';
-                try {
-                    errorMessage = await response.json();
-                } catch (e) {
-                    // Mantém a mensagem de erro genérica se não for possível extrair do JSON
-                }
-                throw new Error(errorMessage);
+                const errorData = await response.json().catch(() => ({}));
+                throw new Error(errorData.message || `Erro ao criar Stratum (status: ${response.status})`);
             }
             return response.json();
         },
@@ -66,20 +62,14 @@ export function useUpdateStratum() {
     return useMutation<Stratum, Error, { id: string | number; data: StratumForm }>({
         mutationFn: async (variables: { id: string | number; data: StratumForm }): Promise<Stratum> => {
             const { id, data } = variables;
-            const response = await fetch(`/api/stratums/${id}`, { // Local da API
+            const response = await fetch(`http://localhost:8888/stratum/${id}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(data),
             });
-
             if (!response.ok) {
-                let errorData;
-                try {
-                    errorData = await response.json();
-                } catch (e) {
-                    errorData = { message: 'Erro ao atualizar stratum. Sem resposta JSON.' };
-                }
-                throw new Error(errorData.message || 'Erro desconhecido ao atualizar stratum.');
+                const errorData = await response.json().catch(() => ({}));
+                throw new Error(errorData.message || `Erro ao atualizar Stratum (status: ${response.status})`);
             }
             return response.json() as Promise<Stratum>;
         },
@@ -98,26 +88,19 @@ export function useUpdateStratum() {
 export function useDeleteStratum() {
     const queryClient = useQueryClient();
 
-    return useMutation<void, Error, { id: string | number; projetoId?: string | number }>({
-        mutationFn: async (variables: { id: string | number; projetoId?: string | number }): Promise<void> => {
-            const { id } = variables;
-            const response = await fetch(`/api/stratums/${id}`, { // Local da API
+    return useMutation({
+        mutationFn: async (id: number) => {
+            const response = await fetch(`http://localhost:8888/stratum/${id}`, {
                 method: 'DELETE',
+                headers: { 'Content-Type': 'application/json' },
             });
-
             if (!response.ok) {
-                let errorData;
-                try {
-                    errorData = await response.json();
-                } catch (e) {
-                    errorData = { message: `Erro ao deletar stratum (status: ${response.status}).` };
-                }
-                throw new Error(errorData.message || 'Erro desconhecido ao deletar stratum.');
+                const errorData = await response.json().catch(() => ({}));
+                throw new Error(errorData.message || `Erro ao apagar Stratum (status: ${response.status})`);
             }
         },
-        onSuccess: (_, variables) => {
-            queryClient.invalidateQueries({ queryKey: [STRATUMS_QUERY_KEY, variables.projetoId].filter(Boolean) });
-            queryClient.invalidateQueries({ queryKey: [STRATUMS_QUERY_KEY] });
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['stratums'] });
             alert('Stratum deletado com sucesso!');
         },
         onError: (error: Error) => {

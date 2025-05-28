@@ -3,7 +3,7 @@
 import React from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
-import { useGetStratums } from '@/hooks/useStratums';
+import { useGetStratums, useCreateStratum } from '@/hooks/useStratums';
 import { StratumCard } from '@/components/stratum/StratumCard';
 import { VisualizacaoStratum } from '@/lib/stratumSchema';
 import GoBackButton from '@/components/buttons/GoBackButton';
@@ -11,15 +11,9 @@ import GoBackButton from '@/components/buttons/GoBackButton';
 export default function StratumsDoProjetoPage() {
     const params = useParams();
     const projetoIdParam = Array.isArray(params.id) ? params.id[0] : params.id;
+    const createStratumMutation = useCreateStratum();
 
-    //const { data: stratums, isLoading, error: errorLoadingStratums, refetch } = useGetStratums(projetoIdParam ?? '');
-    const stratums = [
-        { id: 1, nome: 'Stratum 1', usoAtualTerra: 'Agricultura', usoProjetadoTerra: 'Floresta' },
-        { id: 2, nome: 'Stratum 2', usoAtualTerra: 'Pastagem', usoProjetadoTerra: 'Reserva' },
-    ];
-    const isLoading = false;
-    const errorLoadingStratums: { message?: string } | null = null as { message?: string } | null;
-    const refetch = () => { };
+    const { data: stratums, isLoading, error: errorLoadingStratums, refetch } = useGetStratums(projetoIdParam ?? '');
 
     if (!projetoIdParam) {
         return (
@@ -61,12 +55,22 @@ export default function StratumsDoProjetoPage() {
         window.location.href = `/projetos/${projetoIdParam}/stratums/${stratum.id}/editar`;
     };
 
+    // Função para criar um novo stratum
+    const handleCriarNovoStratum = () => {
+
+        createStratumMutation.mutate({
+            name: `Stratum`,
+            landUseBaseline: ' ',
+            landUseProject: ' ',
+        });
+    };
+
     return (
         <div className="flex justify-center w-full bg-gray-100">
             <div className="max-w-3xl w-3/4 bg-white rounded-2xl shadow-xl p-8 h-full min-h-screen">
                 <header className="grid grid-cols-2 mb-6 pb-4">
-                    <h1 className="text-gray-800 text-3xl font-bold">Stratums do Projeto {projetoIdParam}</h1>
-                    <div className='flex justify-end'><GoBackButton/></div>
+                    <h1 className="text-gray-800 text-3xl font-bold">Projeto { }</h1>
+                    <div className='flex justify-end'><GoBackButton /></div>
                 </header>
 
                 <div>
@@ -86,12 +90,12 @@ export default function StratumsDoProjetoPage() {
                 </div>
 
                 <div className="text-center">
-                    <Link
-                        href={`/projetos/${projetoIdParam}/stratums/novo`}
-                        className="inline-block px-6 py-3 bg-green-600 text-white rounded-md text-lg mt-5 hover:bg-green-700"
+                    <button
+                        onClick={handleCriarNovoStratum}
+                        className="inline-block px-6 py-3 bg-green-600 text-white rounded-md text-lg mt-5 hover:bg-green-800"
                     >
                         ✚ Criar Novo Stratum
-                    </Link>
+                    </button>
                 </div>
             </div>
         </div>

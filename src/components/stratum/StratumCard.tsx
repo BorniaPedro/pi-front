@@ -13,9 +13,9 @@ interface StratumCardProps {
 export function StratumCard({ stratum, onEdit }: StratumCardProps) {
     const deleteStratumMutation = useDeleteStratum();
 
-    const handleDelete = () => {
-        if (window.confirm(`Tem certeza que deseja apagar o stratum "${stratum.nome}" (ID: ${stratum.id})?`)) {
-            deleteStratumMutation.mutate({ id: stratum.id, projetoId: stratum.id });
+    const handleDelete = async () => {
+        if (window.confirm(`Tem certeza que deseja apagar o stratum "${stratum.name}" (ID: ${stratum.id})?`)) {
+            deleteStratumMutation.mutate(stratum.id);
         }
     };
 
@@ -60,13 +60,13 @@ export function StratumCard({ stratum, onEdit }: StratumCardProps) {
                     <strong>ID:</strong> {stratum.id}
                 </p>
                 <p style={{ margin: '4px 0', fontSize: '0.9em', color: '#555' }}>
-                    <strong>Nome:</strong> {stratum.nome}
+                    <strong>Nome:</strong> {stratum.name}
                 </p>
                 <p style={{ margin: '4px 0', fontSize: '0.9em', color: '#555' }}>
-                    <strong>Uso Atual da Terra:</strong> {stratum.usoAtualTerra}
+                    <strong>Uso Atual da Terra:</strong> {stratum.landUseBaseline}
                 </p>
                 <p style={{ margin: '4px 0', fontSize: '0.9em', color: '#555' }}>
-                    <strong>Uso Projetado da Terra:</strong> {stratum.usoProjetadoTerra}
+                    <strong>Uso Projetado da Terra:</strong> {stratum.landUseProject}
                 </p>
                 {/* Se quiser mostrar detalhesCriacao ou outros campos da interface Stratum, adicione aqui */}
                 {/* {stratum.detalhesCriacao && (
@@ -79,7 +79,7 @@ export function StratumCard({ stratum, onEdit }: StratumCardProps) {
                 <button
                     onClick={() => onEdit(stratum)}
                     style={{ ...buttonStyle, backgroundColor: '#007bff', color: 'white' }}
-                    aria-label={`Editar stratum ${stratum.nome}`}
+                    aria-label={`Editar stratum ${stratum.name}`}
                     title="Editar Stratum"
                 >
                     Editar
@@ -88,7 +88,7 @@ export function StratumCard({ stratum, onEdit }: StratumCardProps) {
                     onClick={handleDelete}
                     disabled={deleteStratumMutation.isPending}
                     style={{ ...buttonStyle, backgroundColor: deleteStratumMutation.isPending ? '#ef9a9a' : '#dc3545', color: 'white' }}
-                    aria-label={`Apagar stratum ${stratum.nome}`}
+                    aria-label={`Apagar stratum ${stratum.name}`}
                     title="Apagar Stratum"
                 >
                     {deleteStratumMutation.isPending ? 'Apagando...' : 'Apagar'}
