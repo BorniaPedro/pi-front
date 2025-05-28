@@ -33,7 +33,6 @@ export default function StratumsDoProjetoPage() {
             </div>
         );
     }
-
     if (errorLoadingStratums) {
         return (
             <div className="max-w-3xl mx-auto my-5 p-5 font-sans bg-gray-100 rounded-lg shadow-md">
@@ -62,6 +61,7 @@ export default function StratumsDoProjetoPage() {
             name: `Stratum`,
             landUseBaseline: ' ',
             landUseProject: ' ',
+            projectId: Number(projetoIdParam)
         });
     };
 

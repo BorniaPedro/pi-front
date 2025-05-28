@@ -10,11 +10,7 @@ export function useGetStratums(projetoId: string | number) {
         queryKey: [STRATUMS_QUERY_KEY, ...(projetoId ? [projetoId] : [])],
         queryFn: async (): Promise<Stratum[]> => {
             //const url = projetoId ? `/api/stratums/${projetoId}` : '/api/stratums'; // Local da API
-            let path = '/stratum';
-            if (projetoId) {
-                path += `?projetoId=${projetoId}`;
-            }
-            const response = await fetch(`http://localhost:8888${path}`, {
+            const response = await fetch(`http://localhost:8888/project/stratum/${projetoId}`, {
                 method: 'GET',
                 headers: { 'Content-Type': 'application/json' },
             });
@@ -38,6 +34,7 @@ export function useCreateStratum() {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(newStratum),
             });
+            console.log(newStratum)
             if (!response.ok) {
                 const errorData = await response.json().catch(() => ({}));
                 throw new Error(errorData.message || `Erro ao criar Stratum (status: ${response.status})`);
@@ -47,7 +44,6 @@ export function useCreateStratum() {
         onSuccess: (stratumCriado) => {
             queryClient.invalidateQueries({ queryKey: [STRATUMS_QUERY_KEY, stratumCriado.id] });
             queryClient.invalidateQueries({ queryKey: [STRATUMS_QUERY_KEY] });
-            alert('Stratum criado com sucesso!');
         },
         onError: (error) => {
             alert(error.message);

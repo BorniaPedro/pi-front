@@ -12,6 +12,7 @@ export const stratumFormSchema = z.object({
     landUseProject: z.string()
         .min(1, { message: 'O uso projetado da terra é obrigatório.' })
         .max(50, { message: 'O uso projetado da terra deve ter no máximo 100 caracteres.' }),
+    projectId: z.number()
     // Incluir informações adicionais abaixo
 });
 
@@ -22,6 +23,7 @@ export interface VisualizacaoStratum {
     name: string;
     landUseBaseline: string;
     landUseProject: string;
+    projectId: number
 }
 
 export interface Stratum extends VisualizacaoStratum {
