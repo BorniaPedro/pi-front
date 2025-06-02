@@ -2,12 +2,13 @@ import { QueryProvider } from '@/providers/QueryProvider'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
+import { ThemeRegistry } from '@/theme/ThemeRegistry'
 
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   title: 'MaParaná',
-  description: 'Projeto para Calculo de Créditos de Carbono no Paraná',
+  description: 'Projeto para Cálculo de Créditos de Carbono no Paraná',
 }
 
 export default function RootLayout({
@@ -18,7 +19,11 @@ export default function RootLayout({
   return (
     <html lang="pt-BR">
       <body className={inter.className}>
-        <QueryProvider>{children}</QueryProvider>
+        <ThemeRegistry>
+          <QueryProvider>
+            {children}
+          </QueryProvider>
+        </ThemeRegistry>
       </body>
     </html>
   )
