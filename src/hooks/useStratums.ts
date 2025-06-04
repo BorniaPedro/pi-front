@@ -81,7 +81,10 @@ export function useUpdateStratum() {
 }
 
 // Hook para deletar Stratum
-export function useDeleteStratum() {
+export function useDeleteStratum(callbacks?: {
+    onSuccess?: () => void;
+    onError?: (error: Error) => void;
+  }) {
     const queryClient = useQueryClient();
 
     return useMutation({
@@ -97,10 +100,10 @@ export function useDeleteStratum() {
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['stratums'] });
-            alert('Stratum deletado com sucesso!');
+            callbacks?.onSuccess?.();
         },
         onError: (error: Error) => {
-            alert(error.message);
+            callbacks?.onError?.(error);
         },
     });
 }

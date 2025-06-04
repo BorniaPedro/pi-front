@@ -15,15 +15,16 @@ import { useDeleteStratum } from '@/hooks/useStratums';
 interface StratumCardProps {
     stratum: VisualizacaoStratum;
     onEdit: (stratum: VisualizacaoStratum) => void;
+    onDelete: () => void;
 }
 
-export function StratumCard({ stratum, onEdit }: StratumCardProps) {
+export function StratumCard({ stratum, onEdit, onDelete }: StratumCardProps) {
     const deleteStratumMutation = useDeleteStratum();
 
     const handleDelete = async () => {
         const confirm = window.confirm(`Tem certeza que deseja apagar o stratum "${stratum.name}" (ID: ${stratum.id})?`);
         if (confirm) {
-            deleteStratumMutation.mutate(stratum.id);
+            onDelete();
         }
     };
 
