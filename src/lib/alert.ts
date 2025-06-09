@@ -25,10 +25,10 @@ export const alertConfirm = async (message: string, title = 'Tem certeza?') => {
     text: message,
     icon: 'warning',
     showCancelButton: true,
-    confirmButtonText: 'Sim',
+    confirmButtonText: 'Confirmar',
     cancelButtonText: 'Cancelar',
-    confirmButtonColor: '#d33',
-    cancelButtonColor: '#3085d6',
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
   });
 
   return result.isConfirmed;
