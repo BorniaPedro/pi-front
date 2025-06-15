@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Dialog } from '@headlessui/react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
@@ -32,19 +32,60 @@ export function StratumEditModal({ isOpen, onClose, stratum, onSave }: Props) {
     },
   });
 
+  const [fullStratum, setFullStratum] = useState<VisualizacaoStratum | null>(stratum);
+  const [loading, setLoading] = useState(false);
+
+useEffect(() => {
+  async function fetchAll() {
+    if (isOpen && stratum?.id && stratum?.projectId) {
+      setLoading(true);
+      try {
+        // 1. Buscar o projeto para obter o nome da zona ecológica
+        const projetoRes = await fetch(`http://localhost:8888/project/${stratum.projectId}`);
+        const projeto = await projetoRes.json();
+        const zoneName = (projeto.ecologicalZone).toLowerCase(); 
+
+        // 2. Fazer as três requisições em paralelo usando o name
+        const [agbbgb, agb, agbgrowth] = await Promise.all([
+          fetch(`http://localhost:8888/stratum/biomass/agbbgb/${zoneName}`).then(res => res.json()),
+          fetch(`http://localhost:8888/stratum/biomass/agb/${zoneName}`).then(res => res.json()),
+          fetch(`http://localhost:8888/stratum/biomass/agbgrowth/${zoneName}`).then(res => res.json()),
+        ]);
+
+        // 3. Buscar os dados completos do stratum
+        const stratumRes = await fetch(`http://localhost:8888/stratum/${stratum.id}`);
+        const stratumData = await stratumRes.json();
+
+        // 4. Atualizar o estado com todos os dados
+        setFullStratum({
+          ...stratumData,
+          agbToBgbRatio: agbbgb.value,      // ajuste conforme o retorno da API
+          agbStockBaseline: agb.value,
+          agbGrowthBaseline: agbgrowth.value,
+        });
+      } catch (e) {
+        setFullStratum(stratum);
+      } finally {
+        setLoading(false);
+      }
+    }
+  }
+  fetchAll();
+}, [isOpen, stratum]);
+
+  // Atualiza o formulário quando os dados completos chegam
   useEffect(() => {
-    if (stratum) {
+    if (fullStratum) {
       reset({
-        name: stratum.name,
-        landUseBaseline: stratum.landUseBaseline,
-        landUseProject: stratum.landUseProject,
-        projectId: stratum.projectId,
-        AGBstock: stratum.agbStockBaseline ?? 0,
-        AGBgrowth: stratum.agbGrowthBaseline ?? 0,
+        name: fullStratum.name,
+        landUseBaseline: fullStratum.landUseBaseline,
+        landUseProject: fullStratum.landUseProject,
+        projectId: fullStratum.projectId,
+        AGBstock: fullStratum.agbStockBaseline ?? 0,
+        AGBgrowth: fullStratum.agbGrowthBaseline ?? 0,
       });
     }
-  }, [stratum, reset]);
-
+  }, [fullStratum, reset]);
   const handleClose = () => {
     reset(); 
     onClose(); 
@@ -86,11 +127,10 @@ export function StratumEditModal({ isOpen, onClose, stratum, onSave }: Props) {
             <div>
               <TooltipLabel
                 label="AGB Stock"
-                tooltip="Quantidade atual de biomassa aérea (Above Ground Biomass) acumulada na área"
+                tooltip="Quantidade atual de biomassa acima da terra (Above Ground Biomass) acumulada na área"
               />
               <input
                 id="AGBstock"
-                type="number"
                 {...register('AGBstock', { valueAsNumber: true })}
                 className="w-full border p-2 rounded"
               />
@@ -100,11 +140,10 @@ export function StratumEditModal({ isOpen, onClose, stratum, onSave }: Props) {
             <div>
               <TooltipLabel
                 label="AGB Growth"
-                tooltip="Taxa de crescimento anual da biomassa aérea (AGB)"
+                tooltip="Taxa de crescimento anual de biomassa acima da terra (Above Ground Biomass)"
               />
               <input
                 id="AGBgrowth"
-                type="number"
                 {...register('AGBgrowth', { valueAsNumber: true })}
                 className="w-full border p-2 rounded"
               />
@@ -114,7 +153,7 @@ export function StratumEditModal({ isOpen, onClose, stratum, onSave }: Props) {
             <div>
               <TooltipLabel
                 label="AGB max stock (Project)"
-                tooltip="Estoque máximo projetado de biomassa aérea no projeto"
+                tooltip="Estoque máximo projetado de biomassa acima da terra (Above Ground Biomass) no projeto"
               />
               <input
                 id="agbMaxStockProject"
@@ -128,7 +167,7 @@ export function StratumEditModal({ isOpen, onClose, stratum, onSave }: Props) {
             <div>
               <TooltipLabel
                 label="AGB growth (Project)"
-                tooltip="Taxa de crescimento projetada de biomassa aérea no projeto"
+                tooltip="Taxa de crescimento projetada de biomassa acima da terra (Above Ground Biomass) no projeto"
               />
               <input
                 id="agbGrowthProject"
@@ -141,8 +180,8 @@ export function StratumEditModal({ isOpen, onClose, stratum, onSave }: Props) {
 
             <div>
               <TooltipLabel
-                label="BGB to AGB ratio"
-                tooltip="Proporção entre biomassa subterrânea (BGB) e biomassa aérea (AGB)"
+                label="AGB to BGB ratio"
+                tooltip="Proporção entre biomassa subterrânea (BGB) e biomassa acima da terra (AGB)"
               />
               <input
                 id="bgbToAgbRatio"

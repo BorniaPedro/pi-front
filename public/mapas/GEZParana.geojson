@@ -13,7 +13,7 @@
             "properties": {
                 "fid": 1,
                 "DN": 16,
-                "zona_nome": "TM"
+                "zona_nome": "Tropical Mountain Systems"
             },
             "geometry": {
                 "type": "Polygon",
@@ -158,7 +158,7 @@
             "properties": {
                 "fid": 4,
                 "DN": 12,
-                "zona_nome": "TAWa"
+                "zona_nome": "Tropical Moist Deciduous Forest" 
             },
             "geometry": {
                 "type": "Polygon",
@@ -193,7 +193,7 @@
             "properties": {
                 "fid": 5,
                 "DN": 16,
-                "zona_nome": "TM"
+                "zona_nome": "Tropical Mountain Systems"
             },
             "geometry": {
                 "type": "Polygon",
@@ -322,7 +322,7 @@
             "properties": {
                 "fid": 8,
                 "DN": 16,
-                "zona_nome": "TM"
+                "zona_nome": "Tropical Mountain Systems"
             },
             "geometry": {
                 "type": "Polygon",
@@ -1315,7 +1315,7 @@
             "properties": {
                 "fid": 9,
                 "DN": 16,
-                "zona_nome": "TM"
+                "zona_nome": "Tropical Mountain Systems"
             },
             "geometry": {
                 "type": "Polygon",
@@ -1422,7 +1422,7 @@
             "properties": {
                 "fid": 10,
                 "DN": 16,
-                "zona_nome": "TM"
+                "zona_nome": "Tropical Mountain Systems"
             },
             "geometry": {
                 "type": "Polygon",
@@ -1457,7 +1457,7 @@
             "properties": {
                 "fid": 11,
                 "DN": 16,
-                "zona_nome": "TM"
+                "zona_nome": "Tropical Mountain Systems"
             },
             "geometry": {
                 "type": "Polygon",
@@ -1492,7 +1492,7 @@
             "properties": {
                 "fid": 12,
                 "DN": 11,
-                "zona_nome": "TAr"
+                "zona_nome": "Tropical Rain Forest"
             },
             "geometry": {
                 "type": "Polygon",
@@ -1535,7 +1535,7 @@
             "properties": {
                 "fid": 13,
                 "DN": 12,
-                "zona_nome": "TAWa"
+                "zona_nome": "Tropical Moist Deciduous Forest"
             },
             "geometry": {
                 "type": "Polygon",
@@ -3298,7 +3298,7 @@
             "properties": {
                 "fid": 14,
                 "DN": 16,
-                "zona_nome": "TM"
+                "zona_nome": "Tropical Mountain Systems"
             },
             "geometry": {
                 "type": "Polygon",
@@ -3824,7 +3824,7 @@
             "properties": {
                 "fid": 16,
                 "DN": 11,
-                "zona_nome": "TAr"
+                "zona_nome": "Tropical Rain Forest"
             },
             "geometry": {
                 "type": "Polygon",
@@ -3929,7 +3929,7 @@
             "properties": {
                 "fid": 19,
                 "DN": 16,
-                "zona_nome": "TM"
+                "zona_nome": "Tropical Mountain Systems"
             },
             "geometry": {
                 "type": "Polygon",
@@ -4122,7 +4122,7 @@
             "properties": {
                 "fid": 22,
                 "DN": 11,
-                "zona_nome": "TAr"
+                "zona_nome": "Tropical Rain Forest"
             },
             "geometry": {
                 "type": "Polygon",
@@ -4157,7 +4157,7 @@
             "properties": {
                 "fid": 23,
                 "DN": 11,
-                "zona_nome": "TAr"
+                "zona_nome": "Tropical Rain Forest"
             },
             "geometry": {
                 "type": "Polygon",
@@ -4262,7 +4262,7 @@
             "properties": {
                 "fid": 26,
                 "DN": 11,
-                "zona_nome": "TAr"
+                "zona_nome": "Tropical Rain Forest"
             },
             "geometry": {
                 "type": "Polygon",
@@ -5073,7 +5073,7 @@
             "properties": {
                 "fid": 27,
                 "DN": 16,
-                "zona_nome": "TM"
+                "zona_nome": "Tropical Mountain Systems"
             },
             "geometry": {
                 "type": "Polygon",
@@ -5340,7 +5340,7 @@
             "properties": {
                 "fid": 28,
                 "DN": 12,
-                "zona_nome": "TAWa"
+                "zona_nome": "Tropical Moist Deciduous Forest"
             },
             "geometry": {
                 "type": "Polygon",
@@ -6540,7 +6540,7 @@
             "properties": {
                 "fid": 30,
                 "DN": 21,
-                "zona_nome": "SCf"
+                "zona_nome": "Subtropical Humid Forest"
             },
             "geometry": {
                 "type": "Polygon",
@@ -7855,7 +7855,7 @@
             "properties": {
                 "fid": 31,
                 "DN": 11,
-                "zona_nome": "TAr"
+                "zona_nome": "Tropical Rain Forest"
             },
             "geometry": {
                 "type": "Polygon",
