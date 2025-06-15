@@ -13,6 +13,7 @@ import GeoJSON from 'ol/format/GeoJSON';
 import { Style, Fill, Stroke } from 'ol/style';
 import { Feature, Overlay } from 'ol';
 import { Geometry } from 'ol/geom';
+import { alertWarning } from '@/lib/alert';
 
 interface OLMapProps {
   onSelectInfo?: (info: {
@@ -125,7 +126,7 @@ export default function OLMap({ onSelectInfo }: OLMapProps) {
       });
 
       if (!isInsideParana) {
-        alert('Selecione um ponto dentro do Paraná!');
+        alertWarning('Selecione um ponto dentro do Paraná!');
         return;
       }
 
