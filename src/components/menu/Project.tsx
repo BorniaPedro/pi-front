@@ -23,12 +23,28 @@ export default function ProjectMenu() {
 
     if (isLoading) {
         return (
-            <div className="flex items-center justify-center w-screen h-screen">
+            <div className="flex justify-center items-center w-screen h-screen">
                 <CircularProgress />
             </div>
         );
     }
-    if (error) return <p>Erro ao carregar projetos: {(error as Error).message}</p>;
+
+    if (error) {
+        const errorMessage = (error as Error).message ?? 'Erro desconhecido';
+        return (
+            <div className="max-w-3xl mx-auto my-5 p-5 font-sans bg-gray-100 rounded-lg shadow-md flex flex-col items-center">
+                <p className="text-center p-5 text-lg text-gray-700">
+                    Erro ao carregar projetos: {errorMessage}
+                </p>
+                <button
+                    onClick={() => refetch()}
+                    className="inline-block px-6 py-3 bg-blue-600 text-white rounded-md text-center text-lg mt-5 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+                >
+                    Tentar Novamente
+                </button>
+            </div>
+        );
+    }
 
     return (
         <div className="flex justify-center items-center min-h-screen bg-gray-50 p-4">
@@ -36,7 +52,14 @@ export default function ProjectMenu() {
                 <div className="flex justify-between items-center mb-8 pb-5 border-b border-gray-200">
                     <h1 className="text-4xl font-bold">Meus Projetos</h1>
                     <Stack spacing={2} direction="row">
-                        <Button sx={{ backgroundColor: '#2979ff', '&:hover': { backgroundColor: '#1a3e8c' } }} size="large" variant="contained">✚ Criar Novo Projeto</Button>
+                        <Button
+                            sx={{ backgroundColor: '#2979ff', '&:hover': { backgroundColor: '#1a3e8c' } }}
+                            size="large"
+                            variant="contained"
+                            href="/projetos/cadastro"
+                        >
+                            ✚ Criar Novo Projeto
+                        </Button>
                     </Stack>
                 </div>
                 <div className="grid grid-cols-2 gap-6">

@@ -25,7 +25,8 @@ export default function ProjectCard({ project }: ProjectCardProps) {
     /**/
     return (
         <CardActionArea>
-            <Card variant="outlined" sx={{ minWidth: 275, minHeight: 150, backgroundColor: '#e5e5e5', '&:hover': { backgroundColor: '#bebebe' } }} onClick={handleClick}>
+
+            <Card variant="outlined" sx={{ minWidth: 275, minHeight: 150, backgroundColor: '#ffffff', '&:hover': { backgroundColor: '#bebebe' } }} onClick={handleClick}>
                 <CardContent>
                     <Typography variant="h5" component="div" sx={{ fontWeight: 'bold', mb: 1.5 }}>
                         {project.name}
