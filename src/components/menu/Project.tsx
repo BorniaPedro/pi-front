@@ -2,6 +2,7 @@
 
 import { useMutation, useQuery } from "@tanstack/react-query";
 import ProjectCard from "./ProjectCard";
+import CircularProgress from '@mui/material/CircularProgress';
 
 const fetchProjects = async () => {
     const response = await fetch('http://localhost:8888/project', {
@@ -18,7 +19,13 @@ export default function ProjectMenu() {
         queryFn: fetchProjects,
     });
 
-    if (isLoading) return <p>Carregando projetos...</p>;
+    if (isLoading) {
+        return (
+            <div className="flex items-center justify-center w-screen h-screen">
+                <CircularProgress />
+            </div>
+        );
+    }
     if (error) return <p>Erro ao carregar projetos: {(error as Error).message}</p>;
 
     return (
