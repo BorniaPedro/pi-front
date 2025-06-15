@@ -2,6 +2,7 @@
 // hooks/useGetStratums.ts
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { StratumForm, Stratum } from '@/lib/stratumSchema';
+import { alertError, alertSuccess } from '@/lib/alert';
 
 const STRATUMS_QUERY_KEY = 'stratums';
 
@@ -46,7 +47,7 @@ export function useCreateStratum() {
             queryClient.invalidateQueries({ queryKey: [STRATUMS_QUERY_KEY] });
         },
         onError: (error) => {
-            alert(error.message);
+            alertError(error.message);
         },
     })
 }
@@ -72,10 +73,10 @@ export function useUpdateStratum() {
         onSuccess: (updatedStratum) => {
             queryClient.invalidateQueries({ queryKey: [STRATUMS_QUERY_KEY, updatedStratum.id] });
             queryClient.invalidateQueries({ queryKey: [STRATUMS_QUERY_KEY] });
-            alert('Stratum atualizado com sucesso!');
+            alertSuccess('Stratum atualizado com sucesso!');
         },
         onError: (error: Error) => {
-            alert(error.message);
+            alertError(error.message);
         },
     });
 }
@@ -104,6 +105,7 @@ export function useDeleteStratum(callbacks?: {
         },
         onError: (error: Error) => {
             callbacks?.onError?.(error);
+
         },
     });
 }

@@ -7,6 +7,7 @@ import { useState } from 'react';
 import OLMap from '@/components/Map';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
+import { alertError, alertSuccess, alertWarning } from '@/lib/alert';
 
 export function CadastroProjetoForm({ usuarioLogado, codigo }: { usuarioLogado: string; codigo: number }) {
     const router = useRouter();
@@ -56,10 +57,10 @@ export function CadastroProjetoForm({ usuarioLogado, codigo }: { usuarioLogado: 
             reset();
             setMapaSelecionado(false);
             setDadosLocalizacao(null);
-            alert('Projeto cadastrado com sucesso!');
+            alertSuccess('Projeto cadastrado com sucesso!');
             router.push('/menu')
         },
-        onError: (error: Error) => alert(error.message || 'Erro ao cadastrar projeto'),
+        onError: (error: Error) => alertError(error.message || 'Erro ao cadastrar projeto'),
     });
 
     const startYear = watch('startYear');
@@ -75,7 +76,7 @@ export function CadastroProjetoForm({ usuarioLogado, codigo }: { usuarioLogado: 
 
     const onSubmit = (data: ProjetoForm) => {
         if (!mapaSelecionado) {
-            alert('Selecione uma localização no mapa antes de enviar');
+            alertWarning('Selecione uma localização no mapa antes de enviar');
             return;
         }
         cadastrarProjetoMutation.mutate(data);

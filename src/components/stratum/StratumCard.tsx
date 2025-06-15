@@ -11,6 +11,7 @@ import {
 } from '@mui/material';
 import { VisualizacaoStratum } from '@/lib/stratumSchema';
 import { useDeleteStratum } from '@/hooks/useStratums';
+import { alertConfirm } from '@/lib/alert';
 
 interface StratumCardProps {
     stratum: VisualizacaoStratum;
@@ -22,9 +23,9 @@ export function StratumCard({ stratum, onEdit, onDelete }: StratumCardProps) {
     const deleteStratumMutation = useDeleteStratum();
 
     const handleDelete = async () => {
-        const confirm = window.confirm(`Tem certeza que deseja apagar o stratum "${stratum.name}" (ID: ${stratum.id})?`);
-        if (confirm) {
-            onDelete();
+
+        if (await alertConfirm(`Tem certeza que deseja apagar o stratum "${stratum.name}" (ID: ${stratum.id})?`)) {
+            deleteStratumMutation.mutate(stratum.id);
         }
     };
 

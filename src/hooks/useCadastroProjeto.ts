@@ -1,6 +1,7 @@
 // hooks/useCadastroProjeto.ts
 import { useMutation } from '@tanstack/react-query';
 import { ProjetoForm } from '@/lib/cadastroProjetoSchema';
+import { alertError, alertSuccess } from '@/lib/alert';
 
 export function useCadastroProjeto() {
     return useMutation({
@@ -21,10 +22,10 @@ export function useCadastroProjeto() {
         },
         onSuccess: () => {
             // Redirecionar e mostrar mensagem de sucesso
-            alert('Projeto cadastrado com sucesso!');
+            alertSuccess('Projeto cadastrado com sucesso!');
         },
         onError: (error) => {
-            alert(error.message);
+            alertError(error.message);
         },
     });
 }
