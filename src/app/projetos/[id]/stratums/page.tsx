@@ -59,45 +59,56 @@ export default function StratumsDoProjetoPage() {
     const handleEditarStratum = (stratum: VisualizacaoStratum) => {
     setStratumSelecionado(stratum);
     setModalOpen(true);
-};
+    };
 
     const handleSalvarEdicao = (formData: StratumForm) => {
     if (!stratumSelecionado) return;
 
     updateStratumMutation.mutate(
         {
-            id: stratumSelecionado.id,
-            data: {
-                name: formData.name,
-                landUseBaseline: formData.landUseBaseline,
-                landUseProject: formData.landUseProject,
-                projectId: stratumSelecionado.projectId,
-                AGBstock: formData.AGBstock,
-                AGBgrowth: formData.AGBgrowth,
-            },
+        id: stratumSelecionado.id,
+        data: {
+            name: formData.name,
+            landUseBaseline: formData.landUseBaseline,
+            landUseProject: formData.landUseProject,
+            projectId: stratumSelecionado.projectId,
+            AGBstock: formData.AGBstock,
+            AGBgrowth: formData.AGBgrowth,
+            agbStockBaseline: formData.agbStockBaseline,
+            agbGrowthBaseline: formData.agbGrowthBaseline,
+            agbMaxStockProject: formData.agbMaxStockProject,
+            agbGrowthProject: formData.agbGrowthProject,
+            bgbToAgbRatio: formData.bgbToAgbRatio,
+            yearsToAgbMaxStockProject: formData.yearsToAgbMaxStockProject,
         },
-            {
-                onSuccess: () => {
-                    setModalOpen(false);
-                    refetch();
-                },
-                onError: (error: any) => {
-                    console.error('Erro ao atualizar o stratum:', error);
-                    alert('Erro ao atualizar stratum');
-                },
-            }
-        );
+        },
+        {
+        onSuccess: () => {
+            setModalOpen(false);
+            refetch();
+        },
+        onError: (error: any) => {
+            console.error('Erro ao atualizar o stratum:', error);
+            alert('Erro ao atualizar stratum');
+        },
+        }
+    );
     };
-
     const handleCriarNovoStratum = () => {
-        createStratumMutation.mutate({
-            name: `Stratum`,
-            landUseBaseline: ' ',
-            landUseProject: ' ',
-            projectId: Number(projetoIdParam),
-            AGBstock: 0,
-            AGBgrowth: 0
-        });
+    createStratumMutation.mutate({
+        name: `Stratum`,
+        landUseBaseline: ' ',
+        landUseProject: ' ',
+        projectId: Number(projetoIdParam),
+        AGBstock: 0,
+        AGBgrowth: 0,
+        agbStockBaseline: 0,
+        agbGrowthBaseline: 0,
+        agbMaxStockProject: 0,
+        agbGrowthProject: 0,
+        bgbToAgbRatio: 0,
+        yearsToAgbMaxStockProject: 0,
+    });
     };
 
     return (

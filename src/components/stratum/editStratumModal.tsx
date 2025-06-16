@@ -44,6 +44,7 @@ useEffect(() => {
         const projetoRes = await fetch(`http://localhost:8888/project/${stratum.projectId}`);
         const projeto = await projetoRes.json();
         const zoneName = (projeto.ecologicalZone).toLowerCase(); 
+        console.log(projeto.ecologicalZone)
 
         // 2. Fazer as três requisições em paralelo usando o name
         const [agbbgb, agb, agbgrowth] = await Promise.all([
@@ -57,12 +58,12 @@ useEffect(() => {
         const stratumData = await stratumRes.json();
 
         // 4. Atualizar o estado com todos os dados
-        setFullStratum({
-          ...stratumData,
-          agbToBgbRatio: agbbgb.value,      // ajuste conforme o retorno da API
-          agbStockBaseline: agb.value,
-          agbGrowthBaseline: agbgrowth.value,
-        });
+      setFullStratum({
+        ...stratumData,
+        agbToBgbRatio: Array.isArray(agbbgb) ? agbbgb[0] : agbbgb,
+        agbStockProject: Array.isArray(agb) ? agb[0] : agb,
+        agbGrowthProject: Array.isArray(agbgrowth) ? agbgrowth[0] : agbgrowth,
+      });
       } catch (e) {
         setFullStratum(stratum);
       } finally {
@@ -76,6 +77,7 @@ useEffect(() => {
   // Atualiza o formulário quando os dados completos chegam
   useEffect(() => {
     if (fullStratum) {
+      console.log("fullstratum:", fullStratum)
       reset({
         name: fullStratum.name,
         landUseBaseline: fullStratum.landUseBaseline,
@@ -157,7 +159,7 @@ useEffect(() => {
               />
               <input
                 id="agbMaxStockProject"
-                value={stratum?.agbMaxStockProject ?? ''}
+                value={fullStratum?.agbStockProject ?? ''}
                 readOnly
                 tabIndex={-1}
                 className="w-full border p-2 rounded bg-gray-300 text-gray-600"
@@ -171,7 +173,7 @@ useEffect(() => {
               />
               <input
                 id="agbGrowthProject"
-                value={stratum?.agbGrowthProject ?? ''}
+                value={fullStratum?.agbGrowthProject ?? ''}
                 readOnly
                 tabIndex={-1}
                 className="w-full border p-2 rounded bg-gray-300 text-gray-600"
@@ -185,7 +187,7 @@ useEffect(() => {
               />
               <input
                 id="bgbToAgbRatio"
-                value={stratum?.bgbToAgbRatio ?? 0}
+                value={fullStratum?.agbToBgbRatio ?? 0}
                 readOnly
                 tabIndex={-1}
                 className="w-full border p-2 rounded bg-gray-300 text-gray-600"
@@ -199,7 +201,7 @@ useEffect(() => {
               />
               <input
                 id="yearsToAgbMaxStockProject"
-                value={stratum?.yearsToAgbMaxStockProject ?? 0}
+                value={fullStratum?.yearsToAgbMaxStockProject ?? 0}
                 readOnly
                 tabIndex={-1}
                 className="w-full border p-2 rounded bg-gray-300 text-gray-600"

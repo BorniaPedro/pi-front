@@ -13,7 +13,13 @@ export const stratumFormSchema = z.object({
         .max(50, { message: 'O uso projetado da terra deve ter no máximo 100 caracteres.' }),
     projectId: z.number(),
     AGBstock: z.number(),
-    AGBgrowth: z.number()
+    AGBgrowth: z.number(),
+    agbStockBaseline: z.number().nullable(),
+    agbGrowthBaseline: z.number().nullable(),
+    agbMaxStockProject: z.number().nullable(),
+    agbGrowthProject: z.number().nullable(),
+    bgbToAgbRatio: z.number().nullable(),
+    yearsToAgbMaxStockProject: z.number().nullable(),
 });
 
 export type StratumForm = z.infer<typeof stratumFormSchema>;
@@ -23,12 +29,13 @@ export interface VisualizacaoStratum {
     name: string;
     landUseBaseline: string;
     landUseProject: string;
-    projectId: number
+    projectId: number;
+
     agbStockBaseline: number | null;
     agbGrowthBaseline: number | null;
-    agbMaxStockProject: number | null;
+    agbStockProject: number | null;
     agbGrowthProject: number | null;
-    bgbToAgbRatio: number | null;
+    agbToBgbRatio: number | null;
     yearsToAgbMaxStockProject: number | null;
 }
 
