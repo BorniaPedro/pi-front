@@ -2,10 +2,8 @@
 
 import { useEffect, useState } from 'react';
 import { Dialog } from '@headlessui/react';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
 import { TooltipLabel } from '../toolTipLabel';
-import { stratumFormSchema, StratumForm, VisualizacaoStratum } from '@/lib/stratumSchema';
+import { StratumForm, VisualizacaoStratum } from '@/lib/stratumSchema';
 
 interface Props {
   isOpen: boolean;
@@ -15,89 +13,66 @@ interface Props {
 }
 
 export function StratumEditModal({ isOpen, onClose, stratum, onSave }: Props) {
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { errors },
-  } = useForm<StratumForm>({
-    resolver: zodResolver(stratumFormSchema),
-    defaultValues: {
-      name: '',
-      landUseBaseline: '',
-      landUseProject: '',
-      projectId: 0,
-      AGBstock: 0,
-      AGBgrowth: 0,
-    },
-  });
-
   const [fullStratum, setFullStratum] = useState<VisualizacaoStratum | null>(stratum);
   const [loading, setLoading] = useState(false);
 
-useEffect(() => {
-  async function fetchAll() {
-    if (isOpen && stratum?.id && stratum?.projectId) {
-      setLoading(true);
-      try {
-        // 1. Buscar o projeto para obter o nome da zona ecológica
-        const projetoRes = await fetch(`http://localhost:8888/project/${stratum.projectId}`);
-        const projeto = await projetoRes.json();
-        const zoneName = (projeto.ecologicalZone).toLowerCase(); 
-        console.log(projeto.ecologicalZone)
+  useEffect(() => {
+    async function fetchAll() {
+      if (isOpen && stratum?.id && stratum?.projectId) {
+        setLoading(true);
+        try {
+          const projetoRes = await fetch(`http://localhost:8888/project/${stratum.projectId}`);
+          const projeto = await projetoRes.json();
+          const zoneName = (projeto.ecologicalZone).toLowerCase();
 
-        // 2. Fazer as três requisições em paralelo usando o name
-        const [agbbgb, agb, agbgrowth] = await Promise.all([
-          fetch(`http://localhost:8888/stratum/biomass/agbbgb/${zoneName}`).then(res => res.json()),
-          fetch(`http://localhost:8888/stratum/biomass/agb/${zoneName}`).then(res => res.json()),
-          fetch(`http://localhost:8888/stratum/biomass/agbgrowth/${zoneName}`).then(res => res.json()),
-        ]);
+          const [agbbgb, agb, agbgrowth] = await Promise.all([
+            fetch(`http://localhost:8888/stratum/biomass/agbbgb/${zoneName}`).then(res => res.json()),
+            fetch(`http://localhost:8888/stratum/biomass/agb/${zoneName}`).then(res => res.json()),
+            fetch(`http://localhost:8888/stratum/biomass/agbgrowth/${zoneName}`).then(res => res.json()),
+          ]);
 
-        // 3. Buscar os dados completos do stratum
-        const stratumRes = await fetch(`http://localhost:8888/stratum/${stratum.id}`);
-        const stratumData = await stratumRes.json();
+          const stratumRes = await fetch(`http://localhost:8888/stratum/${stratum.id}`);
+          const stratumData = await stratumRes.json();
 
-        // 4. Atualizar o estado com todos os dados
-      setFullStratum({
-        ...stratumData,
-        agbToBgbRatio: Array.isArray(agbbgb) ? agbbgb[0] : agbbgb,
-        agbStockProject: Array.isArray(agb) ? agb[0] : agb,
-        agbGrowthProject: Array.isArray(agbgrowth) ? agbgrowth[0] : agbgrowth,
-      });
-      } catch (e) {
-        setFullStratum(stratum);
-      } finally {
-        setLoading(false);
+          setFullStratum({
+            ...stratumData,
+            agbToBgbRatio: Array.isArray(agbbgb) ? agbbgb[0] : agbbgb,
+            agbStockProject: Array.isArray(agb) ? agb[0] : agb,
+            agbGrowthProject: Array.isArray(agbgrowth) ? agbgrowth[0] : agbgrowth,
+          });
+        } catch (e) {
+          setFullStratum(stratum);
+        } finally {
+          setLoading(false);
+        }
       }
     }
-  }
-  fetchAll();
-}, [isOpen, stratum]);
+    fetchAll();
+  }, [isOpen, stratum]);
 
-  // Atualiza o formulário quando os dados completos chegam
-  useEffect(() => {
-    if (fullStratum) {
-      console.log("fullstratum:", fullStratum)
-      reset({
-        name: fullStratum.name,
-        landUseBaseline: fullStratum.landUseBaseline,
-        landUseProject: fullStratum.landUseProject,
-        projectId: fullStratum.projectId,
-        AGBstock: fullStratum.agbStockBaseline ?? 0,
-        AGBgrowth: fullStratum.agbGrowthBaseline ?? 0,
-      });
-    }
-  }, [fullStratum, reset]);
   const handleClose = () => {
-    reset(); 
-    onClose(); 
+    setFullStratum(stratum);
+    onClose();
   };
 
-  const onSubmit = (data: StratumForm) => {
+  const onSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
     if (confirm('Tem certeza que deseja salvar as alterações?')) {
-      console.log('Dados enviados para onSave:', data);
-      onSave(data);
-      onClose();
+      if (fullStratum) {
+        onSave({
+          name: fullStratum.name,
+          landUseBaseline: fullStratum.landUseBaseline,
+          landUseProject: fullStratum.landUseProject,
+          projectId: fullStratum.projectId,
+          agbStockBaseline: fullStratum.agbStockBaseline ?? null,
+          agbGrowthBaseline: fullStratum.agbGrowthBaseline ?? null,
+          agbStockProject: fullStratum.agbStockProject ?? null,
+          agbGrowthProject: fullStratum.agbGrowthProject ?? null,
+          bgbToAgbRatio: fullStratum.agbToBgbRatio ?? null,
+          // yearsToAgbMaxStockProject: fullStratum.yearsToAgbMaxStockProject ?? null,
+        });
+        onClose();
+      }
     }
   };
 
@@ -107,23 +82,35 @@ useEffect(() => {
       <div className="fixed inset-0 flex items-center justify-center">
         <Dialog.Panel className="bg-white rounded-2xl p-6 w-full max-w-lg shadow-xl">
           <Dialog.Title className="text-xl font-semibold mb-4">Editar Stratum</Dialog.Title>
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+          <form onSubmit={onSubmit} className="space-y-4">
             <div>
               <label htmlFor="name" className="block font-medium">Nome</label>
-              <input id="name" {...register('name')} className="w-full border p-2 rounded" />
-              {errors.name && <p className="text-red-600 text-sm">{errors.name.message}</p>}
+              <input
+                id="name"
+                value={fullStratum?.name ?? ''}
+                onChange={e => setFullStratum(fs => fs ? { ...fs, name: e.target.value } : fs)}
+                className="w-full border p-2 rounded"
+              />
             </div>
 
             <div>
               <label htmlFor="landUseBaseline" className="block font-medium">Uso Atual da Terra</label>
-              <input id="landUseBaseline" {...register('landUseBaseline')} className="w-full border p-2 rounded" />
-              {errors.landUseBaseline && <p className="text-red-600 text-sm">{errors.landUseBaseline.message}</p>}
+              <input
+                id="landUseBaseline"
+                value={fullStratum?.landUseBaseline ?? ''}
+                onChange={e => setFullStratum(fs => fs ? { ...fs, landUseBaseline: e.target.value } : fs)}
+                className="w-full border p-2 rounded"
+              />
             </div>
 
             <div>
               <label htmlFor="landUseProject" className="block font-medium">Uso Projetado da Terra</label>
-              <input id="landUseProject" {...register('landUseProject')} className="w-full border p-2 rounded" />
-              {errors.landUseProject && <p className="text-red-600 text-sm">{errors.landUseProject.message}</p>}
+              <input
+                id="landUseProject"
+                value={fullStratum?.landUseProject ?? ''}
+                onChange={e => setFullStratum(fs => fs ? { ...fs, landUseProject: e.target.value } : fs)}
+                className="w-full border p-2 rounded"
+              />
             </div>
 
             <div>
@@ -132,11 +119,12 @@ useEffect(() => {
                 tooltip="Quantidade atual de biomassa acima da terra (Above Ground Biomass) acumulada na área"
               />
               <input
-                id="AGBstock"
-                {...register('AGBstock', { valueAsNumber: true })}
+                id="agbStockBaseline"
+                type="number"
+                value={fullStratum?.agbStockBaseline ?? ''}
+                onChange={e => setFullStratum(fs => fs ? { ...fs, agbStockBaseline: Number(e.target.value) } : fs)}
                 className="w-full border p-2 rounded"
               />
-              {errors.AGBstock && <p className="text-red-600 text-sm">{errors.AGBstock.message}</p>}
             </div>
 
             <div>
@@ -145,11 +133,16 @@ useEffect(() => {
                 tooltip="Taxa de crescimento anual de biomassa acima da terra (Above Ground Biomass)"
               />
               <input
-                id="AGBgrowth"
-                {...register('AGBgrowth', { valueAsNumber: true })}
+                id="agbGrowthBaseline"
+                type="number"
+                value={fullStratum?.agbGrowthBaseline ?? ''}
+                onChange={e =>
+                  setFullStratum(fs =>
+                    fs ? { ...fs, agbGrowthBaseline: e.target.value === '' ? null : Number(e.target.value) } : fs
+                  )
+                }
                 className="w-full border p-2 rounded"
               />
-              {errors.AGBgrowth && <p className="text-red-600 text-sm">{errors.AGBgrowth.message}</p>}
             </div>
 
             <div>
@@ -158,7 +151,7 @@ useEffect(() => {
                 tooltip="Estoque máximo projetado de biomassa acima da terra (Above Ground Biomass) no projeto"
               />
               <input
-                id="agbMaxStockProject"
+                id="agbStockProject"
                 value={fullStratum?.agbStockProject ?? ''}
                 readOnly
                 tabIndex={-1}
@@ -187,7 +180,7 @@ useEffect(() => {
               />
               <input
                 id="bgbToAgbRatio"
-                value={fullStratum?.agbToBgbRatio ?? 0}
+                value={fullStratum?.agbToBgbRatio ?? ''}
                 readOnly
                 tabIndex={-1}
                 className="w-full border p-2 rounded bg-gray-300 text-gray-600"
@@ -201,7 +194,7 @@ useEffect(() => {
               />
               <input
                 id="yearsToAgbMaxStockProject"
-                value={fullStratum?.yearsToAgbMaxStockProject ?? 0}
+                // value={fullStratum?.yearsToAgbMaxStockProject ?? ''}
                 readOnly
                 tabIndex={-1}
                 className="w-full border p-2 rounded bg-gray-300 text-gray-600"
