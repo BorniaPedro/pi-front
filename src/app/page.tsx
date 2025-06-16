@@ -1,9 +1,9 @@
-import MapWrapper from '@/components/MapWrapper';
+import ProjectMenuPage from './menu/page';
 
 export default function Home() {
   return (
     <main>
-      <MapWrapper />
+      <ProjectMenuPage />
     </main>
   );
 }
