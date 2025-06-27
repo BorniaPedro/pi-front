@@ -16,6 +16,7 @@ export function CadastroProjetoForm({ usuarioLogado, codigo }: { usuarioLogado: 
         lat: number;
         lon: number;
         clima: string | null;
+        solo: string | null;
         gez: string | null;
     } | null>(null);
 
@@ -46,6 +47,7 @@ export function CadastroProjetoForm({ usuarioLogado, codigo }: { usuarioLogado: 
                     state: "Parana",
                     climateZone: data.climateZone,
                     ecologicalZone: data.ecologicalZone,
+                    soilType: data.soilType,
                     startPeriod: `${data.startYear}-01-01`,
                     endPeriod: `${data.endYear}-01-01`
                 }),
@@ -66,11 +68,12 @@ export function CadastroProjetoForm({ usuarioLogado, codigo }: { usuarioLogado: 
     const startYear = watch('startYear');
     const endYear = watch('endYear');
 
-    const handleSelectLocation = (info: { lat: number; lon: number; clima: string | null; gez: string | null; }) => {
+    const handleSelectLocation = (info: { lat: number; lon: number; clima: string | null; gez: string | null; solo: string | null; }) => {
         setDadosLocalizacao(info);
         setValue('Local', { lat: info.lat, lon: info.lon });
         setValue('climateZone', info.clima || '');
         setValue('ecologicalZone', info.gez || '');
+        setValue('soilType', info.solo || '');
         setMapaSelecionado(true);
     };
 
@@ -110,6 +113,7 @@ export function CadastroProjetoForm({ usuarioLogado, codigo }: { usuarioLogado: 
                                 <p>Latitude: {dadosLocalizacao.lat.toFixed(6)}, Longitude: {dadosLocalizacao.lon.toFixed(6)}</p>
                                 <p>IPCC Climate Zone: {dadosLocalizacao.clima || 'Não identificado'}</p>
                                 <p>Global Ecological Zone: {dadosLocalizacao.gez || 'Não identificado'}</p>
+                                <p>Soil Type: {dadosLocalizacao.solo || 'Não identificado'}</p>
                             </div>
                         )}
                         {errors.Local && <p className="mt-1 text-sm text-red-600">{errors.Local.message}</p>}
