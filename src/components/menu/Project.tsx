@@ -5,21 +5,10 @@ import ProjectCard from "./ProjectCard";
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
-
-const fetchProjects = async () => {
-    const response = await fetch('http://localhost:8888/project', {
-        method: 'GET',
-        headers: { 'Content-Type': 'application/json' },
-    });
-    if (!response.ok) throw new Error('Erro ao buscar projetos!')
-    return response.json();
-};
+import { useGetProjects } from "@/hooks/useProject";
 
 export default function ProjectMenu() {
-    const { data, isLoading, error } = useQuery({
-        queryKey: ['projects'],
-        queryFn: fetchProjects,
-    });
+    const { data, isLoading, error, refetch } = useGetProjects();
 
     if (isLoading) {
         return (
