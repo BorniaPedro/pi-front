@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { useParams } from 'next/navigation';
 import { useGetStratums, useCreateStratum, useDeleteStratum, useUpdateStratum } from '@/hooks/useStratums';
 import { StratumCard } from '@/components/stratum/StratumCard';
-import { VisualizacaoStratum, StratumForm } from '@/lib/stratumSchema';
+import { VisualizacaoStratum, StratumForm, Stratum } from '@/lib/stratumSchema';
 import GoBackButton from '@/components/buttons/GoBackButton';
 import { StratumEditModal } from '@/components/stratum/editStratumModal';
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
@@ -85,7 +85,7 @@ export default function StratumsDoProjetoPage() {
   }
 
   const handleCriarNovoStratum = () => {
-    createStratumMutation.mutate({
+    const newStratumData = {
       name: `Stratum`,
       landUseBaseline: ' ',
       landUseProject: ' ',
@@ -95,8 +95,17 @@ export default function StratumsDoProjetoPage() {
       agbStockProject: 0,
       agbGrowthProject: 0,
       bgbToAgbRatio: 0,
-      // yearsToAgbMaxStockProject: 0,
-    }, {
+      yearsToAgbMaxStock: 0,
+      SOCref: 0,
+      flu: 0,
+      fi: 0,
+      SOCbaseline: 0,
+      SOCmaxProject: 0,
+      AnnualSOCchange: 0,
+      yearsToSOCmaxProject: 0,
+    };
+
+    createStratumMutation.mutate(newStratumData, {
       onSuccess: () => {
         setSnackbarMessage('Stratum criado com sucesso!');
         setSnackbarSeverity('success');
@@ -119,21 +128,30 @@ export default function StratumsDoProjetoPage() {
   const handleSalvarEdicao = (formData: StratumForm) => {
     if (!stratumSelecionado) return;
 
+    const updatedStratumData = {
+      name: formData.name,
+      landUseBaseline: formData.landUseBaseline,
+      landUseProject: formData.landUseProject,
+      projectId: stratumSelecionado.projectId,
+      agbStockBaseline: formData.agbStockBaseline,
+      agbGrowthBaseline: formData.agbGrowthBaseline,
+      agbStockProject: formData.agbStockProject,
+      agbGrowthProject: formData.agbGrowthProject,
+      bgbToAgbRatio: formData.bgbToAgbRatio,
+      yearsToAgbMaxStock: formData.yearsToAgbMaxStock,
+      SOCref: formData.SOCref,
+      flu: formData.flu,
+      fi: formData.fi,
+      SOCbaseline: formData.SOCbaseline,
+      SOCmaxProject: formData.SOCmaxProject,
+      AnnualSOCchange: formData.AnnualSOCchange,
+      yearsToSOCmaxProject: formData.yearsToSOCmaxProject,
+    };
+
     updateStratumMutation.mutate(
       {
         id: stratumSelecionado.id,
-        data: {
-          name: formData.name,
-          landUseBaseline: formData.landUseBaseline,
-          landUseProject: formData.landUseProject,
-          projectId: stratumSelecionado.projectId,
-          agbStockBaseline: formData.agbStockBaseline,
-          agbGrowthBaseline: formData.agbGrowthBaseline,
-          agbStockProject: formData.agbStockProject,
-          agbGrowthProject: formData.agbGrowthProject,
-          bgbToAgbRatio: formData.bgbToAgbRatio,
-          // yearsToAgbMaxStockProject: formData.yearsToAgbMaxStockProject,
-        },
+        data: updatedStratumData,
       },
       {
         onSuccess: () => {

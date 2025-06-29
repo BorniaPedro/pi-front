@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { Dialog } from '@headlessui/react';
 import { TooltipLabel } from '../toolTipLabel';
-import { StratumForm, VisualizacaoStratum } from '@/lib/stratumSchema';
+import { StratumForm, VisualizacaoStratum, Stratum } from '@/lib/stratumSchema';
 
 interface Props {
   isOpen: boolean;
@@ -68,8 +68,15 @@ export function StratumEditModal({ isOpen, onClose, stratum, onSave }: Props) {
           agbGrowthBaseline: fullStratum.agbGrowthBaseline ?? null,
           agbStockProject: fullStratum.agbStockProject ?? null,
           agbGrowthProject: fullStratum.agbGrowthProject ?? null,
-          bgbToAgbRatio: fullStratum.agbToBgbRatio ?? null,
-          // yearsToAgbMaxStockProject: fullStratum.yearsToAgbMaxStockProject ?? null,
+          bgbToAgbRatio: fullStratum.bgbToAgbRatio ?? null,
+          yearsToAgbMaxStock: fullStratum.yearsToAgbMaxStock ?? null,
+          SOCref: fullStratum.SOCref ?? null,
+          flu: fullStratum.flu ?? null,
+          fi: fullStratum.fi ?? null,
+          SOCbaseline: fullStratum.SOCbaseline ?? null,
+          SOCmaxProject: fullStratum.SOCmaxProject ?? null,
+          AnnualSOCchange: fullStratum.AnnualSOCchange ?? null,
+          yearsToSOCmaxProject: fullStratum.yearsToSOCmaxProject ?? null,
         });
         onClose();
       }
@@ -180,24 +187,114 @@ export function StratumEditModal({ isOpen, onClose, stratum, onSave }: Props) {
               />
               <input
                 id="bgbToAgbRatio"
-                value={fullStratum?.agbToBgbRatio ?? ''}
+                value={fullStratum?.bgbToAgbRatio ?? ''}
                 readOnly
                 tabIndex={-1}
                 className="w-full border p-2 rounded bg-gray-300 text-gray-600"
               />
             </div>
-
-            <div>
+             <div>
               <TooltipLabel
-                label="Year to AGBmax stock (Project)"
+                label="Years to AGBmax stock (Project)"
                 tooltip="Anos estimados até atingir o estoque máximo de AGB no projeto"
               />
               <input
-                id="yearsToAgbMaxStockProject"
-                // value={fullStratum?.yearsToAgbMaxStockProject ?? ''}
-                readOnly
-                tabIndex={-1}
-                className="w-full border p-2 rounded bg-gray-300 text-gray-600"
+                id="yearsToAgbMaxStock"
+                type="number"
+                value={fullStratum?.yearsToAgbMaxStock ?? ''}
+                onChange={e => setFullStratum(fs => fs ? { ...fs, yearsToAgbMaxStock: Number(e.target.value) } : fs)}
+                className="w-full border p-2 rounded"
+              />
+            </div>
+             <div>
+              <TooltipLabel
+                label="SOCref"
+                tooltip="SOCref"
+              />
+              <input
+                id="SOCref"
+                type="number"
+                value={fullStratum?.SOCref ?? ''}
+                onChange={e => setFullStratum(fs => fs ? { ...fs, SOCref: Number(e.target.value) } : fs)}
+                className="w-full border p-2 rounded"
+              />
+            </div>
+             <div>
+              <TooltipLabel
+                label="flu"
+                tooltip="flu"
+              />
+              <input
+                id="flu"
+                type="number"
+                value={fullStratum?.flu ?? ''}
+                onChange={e => setFullStratum(fs => fs ? { ...fs, flu: Number(e.target.value) } : fs)}
+                className="w-full border p-2 rounded"
+              />
+            </div>
+             <div>
+              <TooltipLabel
+                label="fi"
+                tooltip="fi"
+              />
+              <input
+                id="fi"
+                type="number"
+                value={fullStratum?.fi ?? ''}
+                onChange={e => setFullStratum(fs => fs ? { ...fs, fi: Number(e.target.value) } : fs)}
+                className="w-full border p-2 rounded"
+              />
+            </div>
+             <div>
+              <TooltipLabel
+                label="SOCbaseline"
+                tooltip="SOCbaseline"
+              />
+              <input
+                id="SOCbaseline"
+                type="number"
+                value={fullStratum?.SOCbaseline ?? ''}
+                onChange={e => setFullStratum(fs => fs ? { ...fs, SOCbaseline: Number(e.target.value) } : fs)}
+                className="w-full border p-2 rounded"
+              />
+            </div>
+             <div>
+              <TooltipLabel
+                label="SOCmaxProject"
+                tooltip="SOCmaxProject"
+              />
+              <input
+                id="SOCmaxProject"
+                type="number"
+                value={fullStratum?.SOCmaxProject ?? ''}
+                onChange={e => setFullStratum(fs => fs ? { ...fs, SOCmaxProject: Number(e.target.value) } : fs)}
+                className="w-full border p-2 rounded"
+              />
+            </div>
+             <div>
+              <TooltipLabel
+                label="AnnualSOCchange"
+                tooltip="AnnualSOCchange"
+              />
+              <input
+                id="AnnualSOCchange"
+                type="number"
+                value={fullStratum?.AnnualSOCchange ?? ''}
+                onChange={e => setFullStratum(fs => fs ? { ...fs, AnnualSOCchange: Number(e.target.value) } : fs)}
+                className="w-full border p-2 rounded"
+              />
+            </div>
+             <div>
+              <TooltipLabel
+                label="yearsToSOCmaxProject"
+                tooltip="yearsToSOCmaxProject"
+              />
+              <input
+                id="yearsToSOCmaxProject"
+                type="number"
+                value={fullStratum?.yearsToSOCmaxProject ?? ''}
+                onChange={e => setFullStratum(fs => fs ? { ...fs, yearsToSOCmaxProject: Number(e.target.value) } : fs)}
+                className="w-full border p-2 rounded"
               />
             </div>
 
