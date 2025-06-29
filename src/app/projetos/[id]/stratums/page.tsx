@@ -7,11 +7,9 @@ import { StratumCard } from '@/components/stratum/StratumCard';
 import { VisualizacaoStratum, StratumForm, Stratum } from '@/lib/stratumSchema';
 import GoBackButton from '@/components/buttons/GoBackButton';
 import { StratumEditModal } from '@/components/stratum/editStratumModal';
-import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 import CircularProgress from '@mui/material/CircularProgress';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
-import { Button } from '@mui/material';
 import Link from 'next/link';
 
 export default function StratumsDoProjetoPage() {
@@ -94,7 +92,7 @@ export default function StratumsDoProjetoPage() {
       agbGrowthBaseline: 0,
       agbStockProject: 0,
       agbGrowthProject: 0,
-      bgbToAgbRatio: 0,
+      agbToBgbRatio: 0,
       yearsToAgbMaxStock: 0,
       SOCref: 0,
       flu: 0,
@@ -137,7 +135,7 @@ export default function StratumsDoProjetoPage() {
       agbGrowthBaseline: formData.agbGrowthBaseline,
       agbStockProject: formData.agbStockProject,
       agbGrowthProject: formData.agbGrowthProject,
-      bgbToAgbRatio: formData.bgbToAgbRatio,
+      agbToBgbRatio: formData.agbToBgbRatio,
       yearsToAgbMaxStock: formData.yearsToAgbMaxStock,
       SOCref: formData.SOCref,
       flu: formData.flu,

@@ -17,7 +17,7 @@ export const stratumFormSchema = z.object({
   agbGrowthBaseline: z.number().nullable(),
   agbStockProject: z.number().nullable(),
   agbGrowthProject: z.number().nullable(),
-  bgbToAgbRatio: z.number().nullable(),
+  agbToBgbRatio: z.number().nullable(),
   yearsToAgbMaxStock: z.number().nullable(),
   SOCref: z.number().nullable(),
   flu: z.number().nullable(),
@@ -42,7 +42,7 @@ export interface VisualizacaoStratum {
   agbGrowthBaseline: number | null;
   agbStockProject: number | null;
   agbGrowthProject: number | null;
-  bgbToAgbRatio: number | null;
+  agbToBgbRatio: number | null;
   yearsToAgbMaxStock: number | null;
   SOCref: number | null;
   flu: number | null;

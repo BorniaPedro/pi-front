@@ -16,7 +16,7 @@ export function StratumEditModal({ isOpen, onClose, stratum, onSave }: Props) {
   const [fullStratum, setFullStratum] = useState<VisualizacaoStratum | null>(stratum);
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
+useEffect(() => {
     async function fetchAll() {
       if (isOpen && stratum?.id && stratum?.projectId) {
         setLoading(true);
@@ -31,15 +31,19 @@ export function StratumEditModal({ isOpen, onClose, stratum, onSave }: Props) {
             fetch(`http://localhost:8888/stratum/biomass/agbgrowth/${zoneName}`).then(res => res.json()),
           ]);
 
+          console.log(agbbgb[0], agb, agbgrowth)
+
           const stratumRes = await fetch(`http://localhost:8888/stratum/${stratum.id}`);
           const stratumData = await stratumRes.json();
 
-          setFullStratum({
-            ...stratumData,
-            agbToBgbRatio: Array.isArray(agbbgb) ? agbbgb[0] : agbbgb,
-            agbStockProject: Array.isArray(agb) ? agb[0] : agb,
-            agbGrowthProject: Array.isArray(agbgrowth) ? agbgrowth[0] : agbgrowth,
-          });
+          setFullStratum(prev => ({
+            ...prev, // Mantém os valores existentes do fullStratum
+            ...stratumData, // Sobrescreve com os dados do stratumData
+            agbToBgbRatio: agbbgb[0],
+            agbStockProject: Array.isArray(agb) && agb.length > 0 ? agb[0] : null,
+            agbGrowthProject: Array.isArray(agbgrowth) && agbgrowth.length > 0 ? agbgrowth[0] : null,
+            yearsToAgbMaxStock: Math.floor(parseFloat(agb[0])/parseFloat(agbgrowth[0]))
+          }));
         } catch (e) {
           setFullStratum(stratum);
         } finally {
@@ -68,7 +72,7 @@ export function StratumEditModal({ isOpen, onClose, stratum, onSave }: Props) {
           agbGrowthBaseline: fullStratum.agbGrowthBaseline ?? null,
           agbStockProject: fullStratum.agbStockProject ?? null,
           agbGrowthProject: fullStratum.agbGrowthProject ?? null,
-          bgbToAgbRatio: fullStratum.bgbToAgbRatio ?? null,
+          agbToBgbRatio: fullStratum.agbToBgbRatio ?? null,
           yearsToAgbMaxStock: fullStratum.yearsToAgbMaxStock ?? null,
           SOCref: fullStratum.SOCref ?? null,
           flu: fullStratum.flu ?? null,
@@ -187,7 +191,7 @@ export function StratumEditModal({ isOpen, onClose, stratum, onSave }: Props) {
               />
               <input
                 id="bgbToAgbRatio"
-                value={fullStratum?.bgbToAgbRatio ?? ''}
+                value={fullStratum?.agbToBgbRatio ?? ''}
                 readOnly
                 tabIndex={-1}
                 className="w-full border p-2 rounded bg-gray-300 text-gray-600"
@@ -200,10 +204,10 @@ export function StratumEditModal({ isOpen, onClose, stratum, onSave }: Props) {
               />
               <input
                 id="yearsToAgbMaxStock"
-                type="number"
+                readOnly
                 value={fullStratum?.yearsToAgbMaxStock ?? ''}
                 onChange={e => setFullStratum(fs => fs ? { ...fs, yearsToAgbMaxStock: Number(e.target.value) } : fs)}
-                className="w-full border p-2 rounded"
+                className="w-full border p-2 rounded bg-gray-300 text-gray-600"
               />
             </div>
              <div>
