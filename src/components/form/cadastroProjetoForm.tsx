@@ -8,6 +8,8 @@ import OLMap from '@/components/Map';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { alertError, alertSuccess, alertWarning } from '@/lib/alert';
+import GoBackButton from '@/components/buttons/GoBackButton';
+
 
 export function CadastroProjetoForm({ usuarioLogado, codigo }: { usuarioLogado: string; codigo: number }) {
     const router = useRouter();
@@ -88,7 +90,13 @@ export function CadastroProjetoForm({ usuarioLogado, codigo }: { usuarioLogado: 
     return (
         <div className="flex justify-center items-center min-h-screen bg-gray-50 p-4">
             <div className="w-full min-w-1x1 max-w-3xl bg-white rounded-2xl shadow-lg p-8">
-                <h1 className="text-2xl font-bold mb-6 text-center">Cadastro de Novo Projeto</h1>
+                <div className="relative flex items-center mb-6">
+                    <div className="absolute left-0">
+                        <GoBackButton />
+                    </div>
+                    <h1 className="flex-1 text-center text-2xl font-bold">Cadastro de Novo Projeto</h1>
+                </div>
+
 
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                     {/* Nome do Projeto */}
