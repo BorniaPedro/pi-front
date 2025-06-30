@@ -15,6 +15,7 @@ export const projetoSchema = z.object({
     PaisEstado: z.literal("Brasil - Paraná"),
     climateZone: z.string(),
     ecologicalZone: z.string(),
+    soilType: z.string(),
     startYear: z
         .number({
             required_error: "O ano de início é obrigatório",

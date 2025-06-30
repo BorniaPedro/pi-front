@@ -21,6 +21,7 @@ interface OLMapProps {
     lon: number;
     clima: string | null;
     gez: string | null;
+    solo: string | null;
   }) => void;
 }
 
@@ -53,6 +54,10 @@ export default function OLMap({ onSelectInfo }: OLMapProps) {
       url: '/mapas/parana.geojson',
       format: new GeoJSON(),
     });
+    const solosSource = new VectorSource({
+      url: '/mapas/solosParana.geojson',
+      format: new GeoJSON(),
+    });
 
     const estiloSemBorda = new Style({
       fill: new Fill({
@@ -67,6 +72,11 @@ export default function OLMap({ onSelectInfo }: OLMapProps) {
 
     const gezLayer = new VectorLayer({
       source: gezSource,
+      style: estiloSemBorda,
+    });
+
+    const solosLayer = new VectorLayer({
+      source: solosSource,
       style: estiloSemBorda,
     });
 
@@ -102,6 +112,7 @@ export default function OLMap({ onSelectInfo }: OLMapProps) {
         new TileLayer({ source: new OSM() }),
         climaLayer,
         gezLayer,
+        solosLayer,
         paranaLayer,
       ],
       view: new View({
@@ -146,11 +157,19 @@ export default function OLMap({ onSelectInfo }: OLMapProps) {
         }
       });
 
+      let solosTipo: string | null = null;
+      solosSource.forEachFeature((feature: Feature<Geometry>) => {
+        if (feature.getGeometry()?.intersectsCoordinate(coord)) {
+          solosTipo = feature.get('solo_nome') || 'Desconhecido';
+        }
+      });
+
       onSelectInfoRef.current?.({
         lat: Number(lat.toFixed(6)),
         lon: Number(lon.toFixed(6)),
         clima: climaZona,
         gez: gezTipo,
+        solo: solosTipo,
       });
     });
 
