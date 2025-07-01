@@ -20,7 +20,7 @@ function TooltipLabel({ label, tooltip }: { label: string; tooltip: string }) {
       <Tooltip.Provider>
         <Tooltip.Root>
           <Tooltip.Trigger asChild>
-            <button type="button">
+            <button type="button" tabIndex={-1}>
               <InfoCircledIcon className="w-4 h-4 text-gray-900" />
             </button>
           </Tooltip.Trigger>
@@ -49,10 +49,16 @@ export function StratumEditModal({ isOpen, onClose, stratum, onSave }: Props) {
           const projeto = await projetoRes.json();
           const zoneName = projeto.ecologicalZone.toLowerCase();
 
-          const [agbbgb, agb, agbgrowth] = await Promise.all([
+          const [agbbgb, agb, agbgrowth, fi, flu, fmg, socref, socbaseline, socmax] = await Promise.all([
             fetch(`http://localhost:8888/stratum/biomass/agbbgb/${zoneName}`).then(res => res.json()),
             fetch(`http://localhost:8888/stratum/biomass/agb/${zoneName}`).then(res => res.json()),
             fetch(`http://localhost:8888/stratum/biomass/agbgrowth/${zoneName}`).then(res => res.json()),
+            fetch(`http://localhost:8888/stratum/soil/fi`).then(res => res.json()),
+            fetch(`http://localhost:8888/stratum/soil/flu`).then(res => res.json()),
+            fetch(`http://localhost:8888/stratum/soil/fmg`).then(res => res.json()),
+            fetch(`http://localhost:8888/stratum/soil/socref`).then(res => res.json()),
+            fetch(`http://localhost:8888/stratum/soil/socbaseline`).then(res => res.json()),
+            fetch(`http://localhost:8888/stratum/soil/socmax`).then(res => res.json()),
           ]);
 
           const stratumRes = await fetch(`http://localhost:8888/stratum/${stratum.id}`);
@@ -65,6 +71,14 @@ export function StratumEditModal({ isOpen, onClose, stratum, onSave }: Props) {
             agbStockProject: Array.isArray(agb) && agb.length > 0 ? agb[0] : null,
             agbGrowthProject: Array.isArray(agbgrowth) && agbgrowth.length > 0 ? agbgrowth[0] : null,
             yearsToAgbMaxStock: Math.floor(parseFloat(agb[0]) / parseFloat(agbgrowth[0])),
+            fi: fi,
+            flu: flu,
+            fmg: fmg,
+            SOCref: socref,
+            SOCbaseline: socbaseline,
+            SOCmaxProject: socmax,
+            AnnualSOCchange: ((socbaseline-socmax)/20),
+            yearsToSOCmaxProject: 10
           }));
         } catch (e) {
           setFullStratum(stratum);
@@ -82,11 +96,11 @@ export function StratumEditModal({ isOpen, onClose, stratum, onSave }: Props) {
     onClose();
   };
 
-  const onSubmit = (e: React.FormEvent) => {
+ const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (confirm('Tem certeza que deseja salvar as alterações?')) {
       if (fullStratum) {
-        onSave({
+        const stratumData = {
           name: fullStratum.name,
           landUseBaseline: fullStratum.landUseBaseline,
           landUseProject: fullStratum.landUseProject,
@@ -105,8 +119,31 @@ export function StratumEditModal({ isOpen, onClose, stratum, onSave }: Props) {
           SOCmaxProject: fullStratum.SOCmaxProject ?? null,
           AnnualSOCchange: fullStratum.AnnualSOCchange ?? null,
           yearsToSOCmaxProject: fullStratum.yearsToSOCmaxProject ?? null,
-        });
-        onClose();
+        };
+
+        try {
+          setLoading(true);
+          const response = await fetch(`http://localhost:8888/stratum/${fullStratum.id}`, {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(stratumData),
+          });
+
+          if (!response.ok) {
+            throw new Error('Erro ao salvar stratum');
+          }
+
+          // Chama a função onSave para atualizar o estado no componente pai
+          onSave(stratumData);
+          onClose();
+        } catch (error) {
+          console.error('Erro ao salvar stratum:', error);
+          alert('Erro ao salvar stratum. Tente novamente.');
+        } finally {
+          setLoading(false);
+        }
       }
     }
   };
@@ -224,10 +261,10 @@ export function StratumEditModal({ isOpen, onClose, stratum, onSave }: Props) {
               <TooltipLabel label="SOCref" tooltip="Estoque de carbono orgânico do solo em solos minerais em condições de referência" />
               <input
                 id="SOCref"
-                type="number"
+                readOnly
                 value={fullStratum?.SOCref ?? ''}
                 onChange={e => setFullStratum(fs => fs ? { ...fs, SOCref: Number(e.target.value) } : fs)}
-                className="w-full border p-2 rounded"
+                className="w-full border p-2 rounded bg-gray-300 text-gray-600"
               />
             </div>
 
@@ -235,10 +272,10 @@ export function StratumEditModal({ isOpen, onClose, stratum, onSave }: Props) {
               <TooltipLabel label="flu" tooltip="Fator de variação de estoque para o uso específico do solo" />
               <input
                 id="flu"
-                type="number"
+                readOnly
                 value={fullStratum?.flu ?? ''}
                 onChange={e => setFullStratum(fs => fs ? { ...fs, flu: Number(e.target.value) } : fs)}
-                className="w-full border p-2 rounded"
+                className="w-full border p-2 rounded bg-gray-300 text-gray-600"
               />
             </div>
 
@@ -246,10 +283,10 @@ export function StratumEditModal({ isOpen, onClose, stratum, onSave }: Props) {
               <TooltipLabel label="fmg" tooltip="Fator de variação de estoque para o regime de gestão específico" />
               <input
                 id="fmg"
-                type="number"
+                readOnly
                 value={fullStratum?.fmg ?? ''}
                 onChange={e => setFullStratum(fs => fs ? { ...fs, fmg: Number(e.target.value) } : fs)}
-                className="w-full border p-2 rounded"
+                className="w-full border p-2 rounded bg-gray-300 text-gray-600"
               />
             </div>
 
@@ -257,10 +294,10 @@ export function StratumEditModal({ isOpen, onClose, stratum, onSave }: Props) {
               <TooltipLabel label="fi" tooltip="Fator de variação de estoque para o regime de entrada orgânico específico" />
               <input
                 id="fi"
-                type="number"
+                readOnly
                 value={fullStratum?.fi ?? ''}
                 onChange={e => setFullStratum(fs => fs ? { ...fs, fi: Number(e.target.value) } : fs)}
-                className="w-full border p-2 rounded"
+                className="w-full border p-2 rounded bg-gray-300 text-gray-600"
               />
             </div>
 
@@ -268,10 +305,10 @@ export function StratumEditModal({ isOpen, onClose, stratum, onSave }: Props) {
               <TooltipLabel label="SOCbaseline" tooltip="Estoque de carbono orgânico do solo no cenário de base" />
               <input
                 id="SOCbaseline"
-                type="number"
+                readOnly
                 value={fullStratum?.SOCbaseline ?? ''}
                 onChange={e => setFullStratum(fs => fs ? { ...fs, SOCbaseline: Number(e.target.value) } : fs)}
-                className="w-full border p-2 rounded"
+                className="w-full border p-2 rounded bg-gray-300 text-gray-600"
               />
             </div>
 
@@ -279,10 +316,10 @@ export function StratumEditModal({ isOpen, onClose, stratum, onSave }: Props) {
               <TooltipLabel label="SOCmaxProject" tooltip="Estoque máximo de carbono orgânico do solo que pode ser alcançado no cenário do projeto" />
               <input
                 id="SOCmaxProject"
-                type="number"
+                readOnly
                 value={fullStratum?.SOCmaxProject ?? ''}
                 onChange={e => setFullStratum(fs => fs ? { ...fs, SOCmaxProject: Number(e.target.value) } : fs)}
-                className="w-full border p-2 rounded"
+                className="w-full border p-2 rounded bg-gray-300 text-gray-600"
               />
             </div>
 
@@ -290,10 +327,10 @@ export function StratumEditModal({ isOpen, onClose, stratum, onSave }: Props) {
               <TooltipLabel label="AnnualSOCchange" tooltip="Taxa anual de aumento do carbono orgânico do solo com as atividades do projeto" />
               <input
                 id="AnnualSOCchange"
-                type="number"
+                readOnly
                 value={fullStratum?.AnnualSOCchange ?? ''}
                 onChange={e => setFullStratum(fs => fs ? { ...fs, AnnualSOCchange: Number(e.target.value) } : fs)}
-                className="w-full border p-2 rounded"
+                className="w-full border p-2 rounded bg-gray-300 text-gray-600"
               />
             </div>
 
@@ -301,10 +338,10 @@ export function StratumEditModal({ isOpen, onClose, stratum, onSave }: Props) {
               <TooltipLabel label="yearsToSOCmaxProject" tooltip="Anos para atingir o SOCmax" />
               <input
                 id="yearsToSOCmaxProject"
-                type="number"
+                readOnly
                 value={fullStratum?.yearsToSOCmaxProject ?? ''}
                 onChange={e => setFullStratum(fs => fs ? { ...fs, yearsToSOCmaxProject: Number(e.target.value) } : fs)}
-                className="w-full border p-2 rounded"
+                className="w-full border p-2 rounded bg-gray-300 text-gray-600"
               />
             </div>
 
