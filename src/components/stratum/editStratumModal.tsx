@@ -78,7 +78,9 @@ export function StratumEditModal({ isOpen, onClose, stratum, onSave }: Props) {
             SOCbaseline: socbaseline,
             SOCmaxProject: socmax,
             AnnualSOCchange: ((socbaseline-socmax)/20),
-            yearsToSOCmaxProject: 10
+            yearsToSOCmaxProject: 10,
+            agbStockBaseline: stratumData.agbStockBaseline != null ? Number(stratumData.agbStockBaseline) : null,
+            agbGrowthBaseline: stratumData.agbGrowthBaseline != null ? Number(stratumData.agbGrowthBaseline) : null,
           }));
         } catch (e) {
           setFullStratum(stratum);
@@ -194,7 +196,7 @@ export function StratumEditModal({ isOpen, onClose, stratum, onSave }: Props) {
               <input
                 id="agbStockBaseline"
                 type="number"
-                value={fullStratum?.agbStockBaseline ?? ''}
+                value={fullStratum?.agbStockBaseline ?? 0}
                 onChange={e => setFullStratum(fs => fs ? { ...fs, agbStockBaseline: Number(e.target.value) } : fs)}
                 className="w-full border p-2 rounded"
               />
@@ -263,7 +265,6 @@ export function StratumEditModal({ isOpen, onClose, stratum, onSave }: Props) {
                 id="SOCref"
                 readOnly
                 value={fullStratum?.SOCref ?? ''}
-                onChange={e => setFullStratum(fs => fs ? { ...fs, SOCref: Number(e.target.value) } : fs)}
                 className="w-full border p-2 rounded bg-gray-300 text-gray-600"
               />
             </div>
@@ -274,7 +275,6 @@ export function StratumEditModal({ isOpen, onClose, stratum, onSave }: Props) {
                 id="flu"
                 readOnly
                 value={fullStratum?.flu ?? ''}
-                onChange={e => setFullStratum(fs => fs ? { ...fs, flu: Number(e.target.value) } : fs)}
                 className="w-full border p-2 rounded bg-gray-300 text-gray-600"
               />
             </div>
@@ -285,7 +285,6 @@ export function StratumEditModal({ isOpen, onClose, stratum, onSave }: Props) {
                 id="fmg"
                 readOnly
                 value={fullStratum?.fmg ?? ''}
-                onChange={e => setFullStratum(fs => fs ? { ...fs, fmg: Number(e.target.value) } : fs)}
                 className="w-full border p-2 rounded bg-gray-300 text-gray-600"
               />
             </div>
@@ -296,7 +295,6 @@ export function StratumEditModal({ isOpen, onClose, stratum, onSave }: Props) {
                 id="fi"
                 readOnly
                 value={fullStratum?.fi ?? ''}
-                onChange={e => setFullStratum(fs => fs ? { ...fs, fi: Number(e.target.value) } : fs)}
                 className="w-full border p-2 rounded bg-gray-300 text-gray-600"
               />
             </div>
@@ -307,7 +305,6 @@ export function StratumEditModal({ isOpen, onClose, stratum, onSave }: Props) {
                 id="SOCbaseline"
                 readOnly
                 value={fullStratum?.SOCbaseline ?? ''}
-                onChange={e => setFullStratum(fs => fs ? { ...fs, SOCbaseline: Number(e.target.value) } : fs)}
                 className="w-full border p-2 rounded bg-gray-300 text-gray-600"
               />
             </div>
@@ -318,7 +315,6 @@ export function StratumEditModal({ isOpen, onClose, stratum, onSave }: Props) {
                 id="SOCmaxProject"
                 readOnly
                 value={fullStratum?.SOCmaxProject ?? ''}
-                onChange={e => setFullStratum(fs => fs ? { ...fs, SOCmaxProject: Number(e.target.value) } : fs)}
                 className="w-full border p-2 rounded bg-gray-300 text-gray-600"
               />
             </div>
@@ -329,7 +325,6 @@ export function StratumEditModal({ isOpen, onClose, stratum, onSave }: Props) {
                 id="AnnualSOCchange"
                 readOnly
                 value={fullStratum?.AnnualSOCchange ?? ''}
-                onChange={e => setFullStratum(fs => fs ? { ...fs, AnnualSOCchange: Number(e.target.value) } : fs)}
                 className="w-full border p-2 rounded bg-gray-300 text-gray-600"
               />
             </div>
@@ -340,7 +335,6 @@ export function StratumEditModal({ isOpen, onClose, stratum, onSave }: Props) {
                 id="yearsToSOCmaxProject"
                 readOnly
                 value={fullStratum?.yearsToSOCmaxProject ?? ''}
-                onChange={e => setFullStratum(fs => fs ? { ...fs, yearsToSOCmaxProject: Number(e.target.value) } : fs)}
                 className="w-full border p-2 rounded bg-gray-300 text-gray-600"
               />
             </div>
